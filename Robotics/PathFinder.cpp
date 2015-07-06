@@ -16,23 +16,23 @@ PathFinder::~PathFinder() {
 	// TODO Auto-generated destructor stubb
 }
 
-Point* PathFinder::getPoint(int x, int y){
+Point* PathFinder::getPoint(int row, int col){
 
-	if (_robotsGrid->get(x, y) == NULL){
-		_robotsGrid->set(x,y,new Point(x,y, _originalMap->get(x,y) != Utils::OCCUPIED));
+	if (_robotsGrid->get(row, col) == NULL){
+		_robotsGrid->set(row,col,new Point(col,row, _originalMap->get(row,col) != Utils::OCCUPIED));
 	}
 
-	return _robotsGrid->get(x,y);
+	return _robotsGrid->get(row,col);
 }
 
 
-vector<Point*> PathFinder::aStar(float x1, float y1, float x2, float y2){
+vector<Point*> PathFinder::aStar(float row1, float col1, float row2, float col2){
 
     vector<Point*> path;
 
     // Define points to work with
-    Point *start = new Point(x1, y1, true);// getPointFromCoord(x1, y1);
-    Point *end = new Point(x2, y2, true);// getPointFromCoord(x2, y2);
+    Point *start = getPoint(row1, col1);// getPointFromCoord(x1, y1);
+    Point *end = getPoint(row2, col2);// getPointFromCoord(x2, y2);
     Point *current;
     Point *child;
 
@@ -47,7 +47,7 @@ vector<Point*> PathFinder::aStar(float x1, float y1, float x2, float y2){
     openList.push_back(start);
     start->opened = true;
 
-    while (n == 0 || (current != end && n < 50))
+    while (n == 0 || (n < 1000 && (current->x != end->x || current->y != end->y)))
     {
         // Look for the smallest F value in the openList and make it the current point
         for (i = openList.begin(); i != openList.end(); ++ i)
@@ -59,7 +59,7 @@ vector<Point*> PathFinder::aStar(float x1, float y1, float x2, float y2){
         }
 
         // Stop if we reached the end
-        if (current == end)
+        if (current->x == end->x && current->y == end->y)
         {
             break;
         }
@@ -84,7 +84,7 @@ vector<Point*> PathFinder::aStar(float x1, float y1, float x2, float y2){
                 }
 
                 // Get this point
-                child = getPoint(current->getX() + x, current->getY() + y);
+                child = getPoint(current->getY() + y, current->getX() + x);
 
                 // If it's closed or not walkable then pass
                 if (child->closed || !child->walkable)
@@ -95,8 +95,7 @@ vector<Point*> PathFinder::aStar(float x1, float y1, float x2, float y2){
                 // If we are at a corner
                 if (x != 0 && y != 0)
                 {
-					Point* nextYPoint = getPoint(current->getX(),
-							current->getY() + y);
+					Point* nextYPoint = getPoint(current->getY() + y, current->getX());
                     // if the next horizontal point is not walkable or in the closed list then pass
 
                     if (!nextYPoint->walkable || nextYPoint->closed)
@@ -104,7 +103,7 @@ vector<Point*> PathFinder::aStar(float x1, float y1, float x2, float y2){
                         continue;
                     }
 
-                    Point* nextXPoint = getPoint(current->getX() + x, current->getY());
+                    Point* nextXPoint = getPoint(current->getY(), current->getX() + x);
                     // if the next vertical point is not walkable or in the closed list then pass
                     if (!nextXPoint->walkable || nextXPoint->closed)
                     {

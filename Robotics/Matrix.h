@@ -11,6 +11,7 @@
 #include <iostream>
 #include "Utils.h"
 #include "Point.h"
+#include <stdexcept>
 
 using namespace std;
 
@@ -38,8 +39,8 @@ public:
 			return _matrix[x][y];
 		}
 
-		T value = T();
-		return value;
+        throw std::invalid_argument( "received negative value" );
+
 	};
 
 	int getRows() const{

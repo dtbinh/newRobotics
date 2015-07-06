@@ -13,7 +13,7 @@
 using namespace std;
 
 int main(){
-	char* mapPath = "/home/colman/Desktop/robotics/Robotics/Robotics/roboticLabMap.png";
+	char* mapPath = "/home/colman/Desktop/newRobotics/Robotics/roboticLabMap.png";
 
 	Map map = Map(mapPath);
 
@@ -21,16 +21,16 @@ int main(){
 
 	Matrix<Utils::CELL_STATUS>* originalMap = map.getOriginalMap();
 	PathFinder* pathFinder = new PathFinder(originalMap);
-	vector<Point*> path = pathFinder->aStar(362,305,169,138);
+	vector<Point*> path = pathFinder->aStar(305, 362,138,169);
 
-	// TODO: check if astar is correct, by printing the map, Ori: somehow the x and y is opposite again...(305,362) in file
-//	originalMap->set(305,362, Utils::BLOWN);
-//	for(int i=0; i < path.size(); i++){
-//		originalMap->set(path[i]->y, path[i]->x, Utils::BLOWN);
-//	}
-//	originalMap->set(138,169, Utils::BLOWN);
-//
-//	originalMap->print();
+	// TODO: check if astar is correct, by printing the map
+	originalMap->set(305,362, Utils::BLOWN);
+	for(int i=0; i < path.size(); i++){
+		originalMap->set(path[i]->y, path[i]->x, Utils::BLOWN);
+	}
+	originalMap->set(138,169, Utils::BLOWN);
+
+	originalMap->print();
 
 	return 0;
 }

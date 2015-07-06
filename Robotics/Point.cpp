@@ -30,11 +30,6 @@ Point::~Point()
 {
 }
 
-//Location* Point::getPosition()
-//{
-//    return new Location((float)(x * 64), (float)(y * 64));
-//}
-
 Point* Point::getParent()
 {
     return parent;

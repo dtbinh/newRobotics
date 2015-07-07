@@ -6,7 +6,7 @@
  */
 
 #include "Point.h"
-
+#include <cmath>
 
 Point::Point()
 {

@@ -34,9 +34,9 @@ public:
 
 	Matrix(int xSize, int ySize);
 
-	T get(int x, int y) const{
-		if (x < _rows && y < _columns){
-			return _matrix[x][y];
+	T get(int row, int col) const{
+		if (row < _rows && col < _columns){
+			return _matrix[row][col];
 		}
 
         throw std::invalid_argument( "received negative value" );
@@ -53,6 +53,7 @@ public:
 
 	void set(int x, int y, T value);
 	void init(T value);
+	void init(Matrix<T>* matrix);
 
 	void print() const{
 		for (int i = 0; i < _rows; i++){

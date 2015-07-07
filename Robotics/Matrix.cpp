@@ -8,15 +8,15 @@
 #include "Matrix.h"
 
 template<class T>
-Matrix<T>::Matrix(int xSize, int ySize) {
+Matrix<T>::Matrix(int rows, int columns) {
 
-	_matrix = new T*[xSize];
-	for (int i = 0; i < xSize; i++){
-		_matrix[i] = new T[ySize];
+	_matrix = new T*[rows];
+	for (int i = 0; i < rows; i++){
+		_matrix[i] = new T[columns];
 	}
 
-	_rows = xSize;
-	_columns = ySize;
+	_rows = rows;
+	_columns = columns;
 }
 
 template<class T>
@@ -29,8 +29,17 @@ void Matrix<T>::init(T value) {
 }
 
 template<class T>
-void Matrix<T>::set(int x, int y, T value) {
-	_matrix[x][y] = value;
+void Matrix<T>::init(Matrix<T>* matrix) {
+	for (int r = 0; r < _rows; r++){
+		for (int c = 0; c < _columns; c++){
+			_matrix[r][c] = matrix->get(r,c);
+		}
+	}
+}
+
+template<class T>
+void Matrix<T>::set(int row, int col, T value) {
+	_matrix[row][col] = value;
 }
 
 template<class T>

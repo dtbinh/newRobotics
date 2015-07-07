@@ -31,8 +31,8 @@ vector<Point*> PathFinder::aStar(float row1, float col1, float row2, float col2)
     vector<Point*> path;
 
     // Define points to work with
-    Point *start = getPoint(row1, col1);// getPointFromCoord(x1, y1);
-    Point *end = getPoint(row2, col2);// getPointFromCoord(x2, y2);
+    Point *start = getPoint(row1, col1);
+    Point *end = getPoint(row2, col2);
     Point *current;
     Point *child;
 
@@ -73,9 +73,9 @@ vector<Point*> PathFinder::aStar(float row1, float col1, float row2, float col2)
         current->closed = true;
 
         // Get all current's adjacent walkable points
-        for (int x = -1; x < 2; x ++)
+        for (int x = -1; x <= 1; x ++)
         {
-            for (int y = -1; y < 2; y ++)
+            for (int y = -1; y <= 1; y ++)
             {
                 // If it's current point then pass
                 if (x == 0 && y == 0)

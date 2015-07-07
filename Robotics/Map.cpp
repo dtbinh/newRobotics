@@ -5,10 +5,7 @@
  *      Author: Ori Damari & Or Shainberg
  */
 
-#include <cmath>
 #include "Map.h"
-#include "Utils.h"
-#include "lodepng.h"
 
 Map::Map(char* mapPath) {
 	loadPng(mapPath);
@@ -36,6 +33,7 @@ void Map::loadPng(char* mapPath){
 
 		_originalMap = new Matrix<Utils::CELL_STATUS>(height, width);
 		_originalMap->init(Utils::OCCUPIED);
+
 		_height = height;
 		_width = width;
 
@@ -52,7 +50,44 @@ void Map::loadPng(char* mapPath){
 	}
 }
 
+void Map::saveOrignialMapToPng(char* path){
+	std::vector<unsigned char> navImage; //the raw pixels
+	navImage.resize(_width * _height * 4);
+	unsigned char color;
+
+	// Create the pixels from the map object
+	for (int y = 0; y < _height; y++)
+		for (int x = 0; x < _width; x++) {
+			if (_originalMap->get(y,x) == Utils::FREE)
+				color = 255;
+			else
+				color = 0;
+			navImage[y * _width * 4 + x * 4 + 0] = color;
+			navImage[y * _width * 4 + x * 4 + 1] = color;
+			navImage[y * _width * 4 + x * 4 + 2] = color;
+			navImage[y * _width * 4 + x * 4 + 3] = 255;
+		}
+
+	saveImageToPng(path,navImage);
+}
+
+void Map::saveImageToPng(char* path, std::vector<unsigned char> image){
+	unsigned error = lodepng::encode(path, image, _width, _height);
+
+	//if there's an error, display it
+	if (error)
+		std::cout << "encoder error " << error << ": "
+				<< lodepng_error_text(error) << std::endl;
+}
+
+void Map::blurMap(int r){
+	// source channel, target channel, width, height, radius
+}
+
 void Map::blowMap() {
+	_blownMap = new Matrix<Utils::CELL_STATUS>(_height, _width);
+	_blownMap->init(_originalMap);
+
 	// Blow map obsticles by robot radius
 	int buffer = 2.5;
 	int robotRadius = ceil(
@@ -68,7 +103,7 @@ void Map::blowMap() {
 							l++) {
 						if (k > 0 && l > 0 && k < _height && l < _width
 								&& _originalMap->get(k,l) == 0) {
-							_originalMap->set(k,l,Utils::BLOWN);
+							_blownMap->set(k,l,Utils::OCCUPIED);
 						}
 					}
 				}
@@ -76,12 +111,12 @@ void Map::blowMap() {
 		}
 	}
 
-	for (int i = 0; i < _height; i++) {
-		for (int j = 0; j < _width; j++) {
-			if (_originalMap->get(i,j) == Utils::BLOWN) {
-				_originalMap->set(i,j,Utils::OCCUPIED);
-			}
-		}
-	}
+//	for (int i = 0; i < _height; i++) {
+//		for (int j = 0; j < _width; j++) {
+//			if (_originalMap->get(i,j) == Utils::BLOWN) {
+//				_originalMap->set(i,j,Utils::OCCUPIED);
+//			}
+//		}
+//	}
 }
 

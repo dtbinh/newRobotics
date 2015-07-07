@@ -20,17 +20,18 @@ int main(){
 	//map.printOriginalMap();
 
 	Matrix<Utils::CELL_STATUS>* originalMap = map.getOriginalMap();
-	PathFinder* pathFinder = new PathFinder(originalMap);
+
+	// Path Finding
+	PathFinder* pathFinder = new PathFinder(map.getBlownMap());
 	vector<Point*> path = pathFinder->aStar(305, 362,138,169);
 
-	// TODO: check if astar is correct, by printing the map
-	originalMap->set(305,362, Utils::BLOWN);
+	// Bonus
+	originalMap->set(305,362, Utils::OCCUPIED);
 	for(int i=0; i < path.size(); i++){
-		originalMap->set(path[i]->y, path[i]->x, Utils::BLOWN);
+		originalMap->set(path[i]->y, path[i]->x, Utils::OCCUPIED);
 	}
-	originalMap->set(138,169, Utils::BLOWN);
-
-	originalMap->print();
+	originalMap->set(138,169, Utils::OCCUPIED);
+	map.saveOrignialMapToPng("/home/colman/Desktop/newMap.png");
 
 	return 0;
 }

@@ -9,6 +9,7 @@
 #include <iostream>
 
 ConfigurationManager::ConfigurationManager(const char* configurationFilePath) {
+	char file_data[10][100];
 	char attribute_name[200];
 	ifstream inputFile;
 	inputFile.open(configurationFilePath, ios::in);
@@ -17,32 +18,32 @@ ConfigurationManager::ConfigurationManager(const char* configurationFilePath) {
 	while (!inputFile.eof()){
 		inputFile.getline(attribute_name, 100, ' ');
 		cout << attribute_name << endl;
-		inputFile.getline(this->file_data[counter],100, '\n');
-		cout << this->file_data[counter] << endl;
+		inputFile.getline(file_data[counter],100, '\n');
+		cout << file_data[counter] << endl;
 		counter++;
 	}
 
 	inputFile.close();
 
-	this->mapPath = this->file_data[0];
+	this->mapPath = file_data[0];
 	this->mapPath = "~/Desktop/roboticLabMap.png";
-	string startLocation = this->file_data[1];
+	string startLocation = file_data[1];
 	this->xStartLocation = atoi(startLocation.substr(0, startLocation.find_first_of(' ')).c_str());
 	startLocation = startLocation.substr(startLocation.find_first_of(' ') + 1);
 	this->yStartLocation = atoi(startLocation.substr(0, startLocation.find_first_of(' ')).c_str());
 	startLocation = startLocation.substr(startLocation.find_first_of(' ') + 1);
 	this->yawStartLocation = atoi(startLocation.c_str());
-	string goal = this->file_data[2];
+	string goal = file_data[2];
 	this->xTarget = atoi(goal.substr(0, goal.find_first_of(' ')).c_str());
 	goal = goal.substr(goal.find_first_of(' ') + 1);
 	this->yTarget = atoi(goal.c_str());
-	string robotSize = this->file_data[3];
+	string robotSize = file_data[3];
 	this->robotLength = atoi(robotSize.substr(0, robotSize.find_first_of(' ')).c_str());
 	robotSize = robotSize.substr(robotSize.find_first_of(' ') + 1);
 	this->robotWidth = atoi(robotSize.c_str());
-	string MapResolutionCM = this->file_data[4];
+	string MapResolutionCM = file_data[4];
 	this->mapResolution = atof(MapResolutionCM.c_str());
-	string GridResolutionCM = this->file_data[5];
+	string GridResolutionCM = file_data[5];
 	this->gridResolution = atof(GridResolutionCM.c_str());
 
 

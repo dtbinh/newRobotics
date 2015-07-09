@@ -18,7 +18,6 @@ public:
 	ConfigurationManager(const char* configurationFilePath);
 	virtual ~ConfigurationManager();
 
-	char file_data[10][100];
 
 	char* mapPath;
 	int xStartLocation;

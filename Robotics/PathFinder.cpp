@@ -7,19 +7,37 @@
 
 #include "PathFinder.h"
 
-PathFinder::PathFinder(Matrix<Utils::CELL_STATUS>* originalMap) {
-	_originalMap = originalMap;
-	_robotsGrid = new Matrix<Point*>(_originalMap->getRows(), _originalMap->getColumns());
+PathFinder::PathFinder(Matrix<Utils::CELL_STATUS>* map) {
+	_map = map;
+	_robotsGrid = new Matrix<Point*>(map->getRows(), map->getColumns());
 }
 
 PathFinder::~PathFinder() {
 	// TODO Auto-generated destructor stubb
+	delete _robotsGrid;
 }
 
 Point* PathFinder::getPoint(int row, int col){
 
 	if (_robotsGrid->get(row, col) == NULL){
-		_robotsGrid->set(row,col,new Point(col,row, _originalMap->get(row,col) != Utils::OCCUPIED));
+		bool isPointWalkable = _map->get(row,col) != Utils::OCCUPIED;
+		bool isPointNearObsacles = false;
+
+		// Check if the point is near obstacles
+		if (isPointWalkable){
+			int halfRadius = 5;
+			for (int y = -halfRadius; y <= halfRadius && !isPointNearObsacles; y++){
+				for (int x = -halfRadius; x <= halfRadius; x++){
+					if (_map->get(row+y,col+x) != Utils::FREE){
+						isPointNearObsacles = true;
+						break;
+					}
+				}
+			}
+		}
+
+		Point* newPoint = new Point(col,row, isPointWalkable, isPointNearObsacles);
+		_robotsGrid->set(row,col, newPoint);
 	}
 
 	return _robotsGrid->get(row,col);

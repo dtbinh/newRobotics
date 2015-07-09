@@ -20,18 +20,23 @@ int main(){
 	//map.printOriginalMap();
 
 	Matrix<Utils::CELL_STATUS>* originalMap = map.getOriginalMap();
+	Matrix<Utils::CELL_STATUS>* blownMap = map.getBlownMap();
 
 	// Path Finding
-	PathFinder* pathFinder = new PathFinder(map.getBlownMap());
+	PathFinder* pathFinder = new PathFinder(blownMap);
 	vector<Point*> path = pathFinder->aStar(305, 362,138,169);
 
 	// Bonus
-	originalMap->set(305,362, Utils::OCCUPIED);
+	Matrix<Utils::CELL_STATUS>* mapToPrintAstarOn = originalMap;
+
+	mapToPrintAstarOn->set(305,362, Utils::OCCUPIED);
 	for(int i=0; i < path.size(); i++){
-		originalMap->set(path[i]->y, path[i]->x, Utils::OCCUPIED);
+		mapToPrintAstarOn->set(path[i]->y, path[i]->x, Utils::OCCUPIED);
 	}
-	originalMap->set(138,169, Utils::OCCUPIED);
-	map.saveOrignialMapToPng("/home/colman/Desktop/newMap.png");
+	mapToPrintAstarOn->set(138,169, Utils::OCCUPIED);
+	map.saveMapToPng(mapToPrintAstarOn, "/home/colman/Desktop/smoothedBlownMap.png");
+
+	std::cout<<"success";
 
 	return 0;
 }

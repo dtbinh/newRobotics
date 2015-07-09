@@ -9,26 +9,31 @@
 #include "Map.h"
 #include "Utils.h"
 #include "PathFinder.h"
+#include "ConfigurationManager.h"
 
 using namespace std;
 
 int main(){
-	char* mapPath = "/home/colman/Desktop/newRobotics/Robotics/roboticLabMap.png";
+	const char* path = "/home/colman/Desktop/newRobotics/Robotics/parameters.txt";
+	ConfigurationManager* configurationManager = new ConfigurationManager(path);
 
-	Map map = Map(mapPath);
 
-	//map.printOriginalMap();
+	char* mapFilePath = configurationManager->mapPath;
+
+	Map map = Map(mapFilePath);
+
+	map.printOriginalMap();
 
 	Matrix<Utils::CELL_STATUS>* originalMap = map.getOriginalMap();
 
 	// Path Finding
 	PathFinder* pathFinder = new PathFinder(map.getBlownMap());
-	vector<Point*> path = pathFinder->aStar(305, 362,138,169);
+	vector<Point*> mapPath = pathFinder->aStar(305, 362,138,169);
 
 	// Bonus
 	originalMap->set(305,362, Utils::OCCUPIED);
-	for(int i=0; i < path.size(); i++){
-		originalMap->set(path[i]->y, path[i]->x, Utils::OCCUPIED);
+	for(int i=0; i < mapPath.size(); i++){
+		originalMap->set(mapPath[i]->y, mapPath[i]->x, Utils::OCCUPIED);
 	}
 	originalMap->set(138,169, Utils::OCCUPIED);
 	map.saveOrignialMapToPng("/home/colman/Desktop/newMap.png");

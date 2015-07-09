@@ -26,7 +26,8 @@ ConfigurationManager::ConfigurationManager(const char* configurationFilePath) {
 	inputFile.close();
 
 	this->mapPath = file_data[0];
-	this->mapPath = "~/Desktop/roboticLabMap.png";
+	/*this->mapPath = "~/Desktop/roboticLabMap.png";
+	this->mapPath = "/home/colman/Desktop/newRobotics/Robotics/roboticLabMap.png";*/
 	string startLocation = file_data[1];
 	this->xStartLocation = atoi(startLocation.substr(0, startLocation.find_first_of(' ')).c_str());
 	startLocation = startLocation.substr(startLocation.find_first_of(' ') + 1);

@@ -25,9 +25,12 @@ ConfigurationManager::ConfigurationManager(const char* configurationFilePath) {
 
 	inputFile.close();
 
-	this->mapPath = file_data[0];
-	/*this->mapPath = "~/Desktop/roboticLabMap.png";
-	this->mapPath = "/home/colman/Desktop/newRobotics/Robotics/roboticLabMap.png";*/
+	string mapString = file_data[0];
+	if (!mapString.empty() && mapString[mapString.size() - 1] == '\r'){
+		mapString.erase(mapString.size() - 1);
+	}
+	this->mapPath = new char[1024];
+	strcpy(this->mapPath, mapString.c_str());
 	string startLocation = file_data[1];
 	this->xStartLocation = atoi(startLocation.substr(0, startLocation.find_first_of(' ')).c_str());
 	startLocation = startLocation.substr(startLocation.find_first_of(' ') + 1);
@@ -50,44 +53,9 @@ ConfigurationManager::ConfigurationManager(const char* configurationFilePath) {
 
 	this->robotLength = this->robotLength / this->mapResolution;
 	this->robotWidth = this->robotWidth / this->mapResolution;
-
-	/*
-
-	istringstream* params = new istringstream[6];
-	string s;
-	ifstream inputFile;
-	inputFile.open(configurationFilePath, ios::in);
-	int counter = 0;
-
-	while(std::getline(inputFile, s)){
-		int i = s.find_first_of(':');
-		s = s.substr(i , s.length() - i);
-		istringstream iss(s);
-		params[counter] = iss;
-
-		counter++;
-	}
-
-	inputFile.close();
-/*
-	for (int index = 0; index < 6; index++){
-		istringstream iss(params[index]);
-	}
-
-/*
-	params[0] >> this->gridResolution;
-
-	params[1] >> this->xStartLocation >> this->yStartLocation >> this->yawStartLocation;
-	params[2] >> this->xTarget >> this->yTarget;
-	params[3] >> this->robotLength >> this->robobWidth;
-	params[4] >> this->mapResolution;
-	params[5] >> this->gridResolution;
-
-	this->robotLength = this->robotLength / this->mapResolution;
-	this->robobWidth = this->robobWidth / this->mapResolution;*/
 }
 
 ConfigurationManager::~ConfigurationManager() {
-	// TODO Auto-generated destructor stub
+	delete [] this->mapPath;
 }
 

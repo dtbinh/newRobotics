@@ -10,7 +10,8 @@
 
 #include <fstream>
 #include <stdlib.h>
-#include <string>
+#include <string.h>
+
 using namespace std;
 
 class ConfigurationManager {

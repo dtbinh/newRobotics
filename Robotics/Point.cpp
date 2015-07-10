@@ -17,11 +17,12 @@ Point::Point()
     x = y = f = g = h = 0;
 }
 
-Point::Point(int x, int y, bool w)
+Point::Point(int x, int y, bool w, bool isPointNearObsacles)
 {
     Point();
 
     this->walkable = w;
+    this->isPointNearObsacles = isPointNearObsacles;
     this->x = x;
     this->y = y;
 }
@@ -62,7 +63,9 @@ float Point::getYf()
 
 int Point::getGScore(Point *p)
 {
-    return p->g + ((x == p->x || y == p->y) ? 10 : 14);
+	int extraCostForObstaclesCloseness = isPointNearObsacles ? 10 : 0;
+
+    return p->g + ((x == p->x || y == p->y) ? 10 : 14) + extraCostForObstaclesCloseness;
 }
 
 int Point::getHScore(Point *p)

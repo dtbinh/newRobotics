@@ -25,18 +25,26 @@ int main(){
 	map.printOriginalMap();
 
 	Matrix<Utils::CELL_STATUS>* originalMap = map.getOriginalMap();
+	Matrix<Utils::CELL_STATUS>* blownMap = map.getBlownMap();
 
 	// Path Finding
-	PathFinder* pathFinder = new PathFinder(map.getBlownMap());
-	vector<Point*> mapPath = pathFinder->aStar(305, 362,138,169);
+
+	PathFinder* pathFinder = new PathFinder(blownMap);
+	vector<Point*> mapPath =
+			pathFinder->aStar(configurationManager->yStartLocation, configurationManager->xStartLocation,
+							  configurationManager->yTarget, configurationManager->xTarget);
 
 	// Bonus
-	originalMap->set(305,362, Utils::OCCUPIED);
+	Matrix<Utils::CELL_STATUS>* mapToPrintAstarOn = originalMap;
+
+	mapToPrintAstarOn->set(configurationManager->yStartLocation, configurationManager->xStartLocation, Utils::OCCUPIED);
 	for(int i=0; i < mapPath.size(); i++){
-		originalMap->set(mapPath[i]->y, mapPath[i]->x, Utils::OCCUPIED);
+		mapToPrintAstarOn->set(mapPath[i]->y, mapPath[i]->x, Utils::OCCUPIED);
 	}
-	originalMap->set(138,169, Utils::OCCUPIED);
-	map.saveOrignialMapToPng("/home/colman/Desktop/newMap.png");
+	mapToPrintAstarOn->set(configurationManager->yTarget, configurationManager->xTarget, Utils::OCCUPIED);
+	map.saveMapToPng(mapToPrintAstarOn, "/home/colman/Desktop/smoothedBlownMap.png");
+
+	std::cout<<"success";
 
 	return 0;
 }

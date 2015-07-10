@@ -24,7 +24,7 @@ public:
 	virtual ~Map();
 
 	void loadPng(char* mapPath);
-	void saveOrignialMapToPng(char* path);
+	void saveMapToPng(Matrix<Utils::CELL_STATUS>* map, char* path);
 	void saveImageToPng(char* path, std::vector<unsigned char> image);
 	void blurMap(int r);
 	void blowMap();

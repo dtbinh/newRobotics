@@ -50,7 +50,7 @@ void Map::loadPng(char* mapPath){
 	}
 }
 
-void Map::saveOrignialMapToPng(char* path){
+void Map::saveMapToPng(Matrix<Utils::CELL_STATUS>* map, char* path){
 	std::vector<unsigned char> navImage; //the raw pixels
 	navImage.resize(_width * _height * 4);
 	unsigned char color;
@@ -58,7 +58,7 @@ void Map::saveOrignialMapToPng(char* path){
 	// Create the pixels from the map object
 	for (int y = 0; y < _height; y++)
 		for (int x = 0; x < _width; x++) {
-			if (_originalMap->get(y,x) == Utils::FREE)
+			if (map->get(y,x) == Utils::FREE)
 				color = 255;
 			else
 				color = 0;

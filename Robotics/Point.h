@@ -15,13 +15,14 @@
 class Point {
 public:
 	Point();
-	Point(int x, int y, bool w);
+	Point(int x, int y, bool w, bool isPointNearObsacles);
 	virtual ~Point();
 
 	Point* parent;
 	bool opened;
 	bool closed;
 	bool walkable;
+	bool isPointNearObsacles;
 	int x,  y,  f,  g,  h;
 
 	//Location* getPosition();

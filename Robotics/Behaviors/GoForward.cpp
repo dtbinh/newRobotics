@@ -1,30 +1,38 @@
 #include "GoForward.h"
 
-GoForward::GoForward(Robot* robot) : Behaviors(robot) {
-}
-
 bool GoForward::startCond()
 {
-	return (_robot->isForwardFree());
-}
+	// Move forward only if none of the front laser indexes found obstacle
+	for(int i=RIGHT_LIMIT_LASER_INDEX; i<LEFT_LIMIT_LASER_INDEX; i++)
+	{
+		if(_robot->getLaserScan(i) < MIN_FRONT_DISTANCE)
+			return false;
+	}
 
-bool GoForward::stopCond()
-{
-	// if forward not free or way point achieved
-	return false;
+	return true;
 }
 
 void GoForward::action()
 {
-	_robot->setSpeed(0.3, turnAngle);
-	turnAngle = 0.0;
+	_robot->setSpeed(FORWARD_SPEED,0.0);
 }
 
-void GoForward::stop()
+double GoForward::availableSpace()
 {
-	_robot->setSpeed(0, turnAngle);
-	turnAngle = 0.0;
+	double totalDistance = 0;
+	for(int i=RIGHT_LIMIT_LASER_INDEX; i<LEFT_LIMIT_LASER_INDEX; i++)
+	{
+		totalDistance += _robot->getLaserScan(i);
+	}
+
+	return totalDistance;
 }
 
-GoForward::~GoForward() {
+bool GoForward::stopCond()
+{
+	return !startCond();
+}
+
+GoForward::~GoForward()
+{
 }

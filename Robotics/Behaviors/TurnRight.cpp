@@ -1,34 +1,44 @@
 #include "TurnRight.h"
 
-TurnRight::TurnRight(Robot* robot) : Behaviors(robot)
+bool TurnRight::startCond()
 {
-	angle = Utils::RIGHT_ANGLE;
-}
-
-TurnRight::TurnRight(Robot* robot, float turnAngle) : Behaviors(robot)
-{
-	angle = turnAngle;
+	// Turn right only if none of the right side laser indexes found obstacle
+	for(int i=0; i<CENTER_LASER_INDEX; i++)
+	{
+		if(_robot->getLaserScan(i) < MIN_SIDE_DISTANCE)
+			return false;
+	}
+	return true;
 }
 
 void TurnRight::action()
 {
-	_robot->setSpeed(0.0, -1 * Utils::YAW_SPEED);
+	_robot->setSpeed(0.0,-ROTATION_SPEED);
 }
-void TurnRight::stop()
+
+double TurnRight::availableSpace()
 {
-	_robot->setSpeed(0, 0);
-}
+	double totalDistance = 0;
+	for(int i=0; i<CENTER_LASER_INDEX; i++)
+	{
+		totalDistance += _robot->getLaserScan(i);
+	}
 
-TurnRight::~TurnRight() {
+	return totalDistance;
 }
-
 
 bool TurnRight::stopCond()
 {
-	return _robot->isForwardFree();
+	// Stop turning if there's no obstacle in front
+	for(int i=RIGHT_LIMIT_LASER_INDEX; i<LEFT_LIMIT_LASER_INDEX; i++)
+	{
+		if (_robot->getLaserScan(i) <= MIN_FRONT_DISTANCE)
+			return false;
+	}
+
+	return true;
 }
 
-bool TurnRight::startCond()
+TurnRight::~TurnRight()
 {
-	return _robot->isRightFree();
 }

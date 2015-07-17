@@ -8,14 +8,15 @@
 #include "Location.h"
 
 Location::Location(int x, int y, int yaw){
-	_x = x;
-	_y = y;
-	_yaw = yaw;
+	this->x = x;
+	this->y = y;
+	this->yaw = yaw;
 }
 
-Location::Location(float x, float y){
-	_x = x;
-	_y = y;
+Location::Location(Location& location){
+	this->x = location.x;
+	this->y = location.y;
+	this->yaw = location.yaw;
 }
 
 Location::~Location() {

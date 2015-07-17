@@ -1,19 +1,11 @@
-#ifndef GOFORWARD_H_
-#define GOFORWARD_H_
+#include "Behavior.h"
 
-#include "Behaviors.h"
-
-using namespace std;
-
-class GoForward: public Behaviors {
-	float turnAngle;
+class GoForward : public Behavior {
 public:
-	GoForward(Robot* robot);
+	GoForward(Robot* robot) : Behavior(robot) {}
+	virtual ~GoForward();
+	void action();
 	bool startCond();
 	bool stopCond();
-	void action();
-	void stop();
-	virtual ~GoForward();
+	double availableSpace();
 };
-
-#endif

@@ -9,13 +9,13 @@
 #define LOCATION_H_
 
 class Location {
-	int _x;
-	int _y;
-	int _yaw;
-
 public:
+	int x;
+	int y;
+	int yaw;
+
 	Location(int x, int y, int yaw);
-	Location(float x, float y);
+	Location(Location& location);
 	virtual ~Location();
 };
 

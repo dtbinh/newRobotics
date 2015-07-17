@@ -1,32 +1,44 @@
 #include "TurnLeft.h"
 
-TurnLeft::TurnLeft(Robot* robot) : Behaviors(robot)
+bool TurnLeft::startCond()
 {
-	angle = Utils::LEFT_ANGLE;
+	// Turn left only if none of the left side laser indexes found obstacle
+	for(int i=CENTER_LASER_INDEX; i<Utils::MAX_LASER_INDEX; i++)
+	{
+		if(_robot->getLaserScan(i) < MIN_SIDE_DISTANCE)
+			return false;
+	}
+	return true;
 }
 
-TurnLeft::TurnLeft(Robot* robot, float turnAngle) : Behaviors(robot)
+void TurnLeft::action()
 {
-	angle = turnAngle;
+	_robot->setSpeed(0.0, ROTATION_SPEED);
 }
 
-void TurnLeft::action() {
-	_robot->setSpeed(0.0, Utils::YAW_SPEED);
-}
-
-void TurnLeft::stop()
+double TurnLeft::availableSpace()
 {
-	_robot->setSpeed(0, 0);
+	double totalDistance = 0;
+	for(int i=CENTER_LASER_INDEX; i<Utils::MAX_LASER_INDEX; i++)
+	{
+		totalDistance += _robot->getLaserScan(i);
+	}
+
+	return totalDistance;
 }
 
-TurnLeft::~TurnLeft() {
+bool TurnLeft::stopCond()
+{
+	// Stop turning if there's no obstacle in front
+	for(int i=RIGHT_LIMIT_LASER_INDEX; i<LEFT_LIMIT_LASER_INDEX; i++)
+	{
+		if (_robot->getLaserScan(i) <= MIN_FRONT_DISTANCE)
+			return false;
+	}
+
+	return true;
 }
 
-
-bool TurnLeft::startCond() {
-	return _robot->isLeftFree();
-}
-
-bool TurnLeft::stopCond() {
-	return _robot->isForwardFree();
+TurnLeft::~TurnLeft()
+{
 }

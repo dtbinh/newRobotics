@@ -12,6 +12,7 @@
 #include "Matrix.h"
 #include "Utils.h"
 #include "Point.h"
+#include "ConfigurationManager.h"
 #include <cmath>
 
 class Map {
@@ -26,7 +27,6 @@ public:
 	void loadPng(char* mapPath);
 	void saveMapToPng(Matrix<Utils::CELL_STATUS>* map, char* path);
 	void saveImageToPng(char* path, std::vector<unsigned char> image);
-	void blurMap(int r);
 	void blowMap();
 	void printOriginalMap() const{
 		_originalMap->print();

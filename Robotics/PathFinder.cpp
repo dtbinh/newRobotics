@@ -77,7 +77,7 @@ vector<Point*> PathFinder::aStar(float row1, float col1, float row2, float col2)
         }
 
         // Stop if we reached the end
-        if (current->x == end->x && current->y == end->y)
+        if (current == end)
         {
             break;
         }

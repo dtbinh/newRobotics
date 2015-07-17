@@ -80,10 +80,6 @@ void Map::saveImageToPng(char* path, std::vector<unsigned char> image){
 				<< lodepng_error_text(error) << std::endl;
 }
 
-void Map::blurMap(int r){
-	// source channel, target channel, width, height, radius
-}
-
 void Map::blowMap() {
 	_blownMap = new Matrix<Utils::CELL_STATUS>(_height, _width);
 	_blownMap->init(_originalMap);
@@ -93,6 +89,9 @@ void Map::blowMap() {
 	int robotRadius = ceil(
 			(sqrt(pow(30 / 2, 2) + pow(30 / 2, 2))
 					+ buffer) / 2.5);
+
+	// Blow map more softly
+	//int robotRadius = ceil(((30/2 + 30/2)/2) / 2.5);
 
 	for (int i = 0; i < _height; i++) {
 		for (int j = 0; j < _width; j++) {
@@ -110,13 +109,5 @@ void Map::blowMap() {
 			}
 		}
 	}
-
-//	for (int i = 0; i < _height; i++) {
-//		for (int j = 0; j < _width; j++) {
-//			if (_originalMap->get(i,j) == Utils::BLOWN) {
-//				_originalMap->set(i,j,Utils::OCCUPIED);
-//			}
-//		}
-//	}
 }
 

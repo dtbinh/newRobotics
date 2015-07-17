@@ -30,6 +30,18 @@ public:
 	{
 		return round((deg+120)/0.36);
 	}
+
+	Behaviors* selectNext()
+	{
+		for (int i = 0; i < nextBehavior.size(); i++)
+		{
+			if (nextBehavior[i]->startCond())
+				return nextBehavior[i];
+			}
+
+		return NULL;
+	}
+
 };
 
 #endif

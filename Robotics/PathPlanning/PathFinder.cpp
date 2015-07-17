@@ -45,7 +45,6 @@ Point* PathFinder::getPoint(int row, int col){
 
 
 vector<Position*> PathFinder::aStar(float row1, float col1, float row2, float col2){
-
     vector<Position*> path;
 
     // Define points to work with

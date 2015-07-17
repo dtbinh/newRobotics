@@ -12,9 +12,9 @@
 #include <vector>
 #include <cstddef>
 #include "Point.h"
-#include "Position.h"
-#include "Location.h"
-#include "Matrix.h"
+#include "../Position.h"
+#include "../Location.h"
+#include "../Matrix.h"
 
 using namespace std;
 

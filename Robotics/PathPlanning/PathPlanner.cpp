@@ -1,29 +1,26 @@
 /*
- * ObstacleAvoidPlan.cpp
+ * PathPlanner.cpp
  *
  *  Created on: Jul 17, 2015
  *      Author: colman
  */
 
-#include "ObstacleAvoidPlan.h"
+#include "PathPlanner.h"
 
-ObstacleAvoidPlan::ObstacleAvoidPlan() {
-	const char* CONFIGURATION_PATH = "parameters.txt";
-	_configurationManager = new ConfigurationManager(CONFIGURATION_PATH);
-
-	_map = new Map(_configurationManager->mapPath);
+PathPlanner::PathPlanner(ConfigurationManager* configurationManager) {
+	_map = new Map(configurationManager->mapPath);
 
 	// Path Finding
 	PathFinder* pathFinder = new PathFinder(_map->getBlownMap());
-	_astarPath = pathFinder->aStar(_configurationManager->yStartLocation, _configurationManager->xStartLocation,
-								   _configurationManager->yTarget, _configurationManager->xTarget);
+	_astarPath = pathFinder->aStar(configurationManager->yStartLocation, configurationManager->xStartLocation,
+								   configurationManager->yTarget, configurationManager->xTarget);
 
 	// Get way points
 	WaypointsManager* waypointMgr = new WaypointsManager(_astarPath);
 	_waypoints = waypointMgr->getWayPoints();
 }
 
-void ObstacleAvoidPlan::printAstarToPng(){
+void PathPlanner::printAstarToPng(){
 	Matrix<Utils::CELL_STATUS>* mapToPrintAstarOn = _map->getOriginalMap();
 
 	for(unsigned int i=0; i < _astarPath.size(); i++){
@@ -34,7 +31,6 @@ void ObstacleAvoidPlan::printAstarToPng(){
 	_map->saveMapToPng(mapToPrintAstarOn, imgPath);
 }
 
-ObstacleAvoidPlan::~ObstacleAvoidPlan() {
+PathPlanner::~PathPlanner() {
 	delete _map;
-	delete _configurationManager;
 }

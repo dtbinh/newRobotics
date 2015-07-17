@@ -11,7 +11,7 @@
 #include <vector>
 #include <iostream>
 #include "Point.h"
-#include "Position.h"
+#include "../Position.h"
 
 class WaypointsManager {
 private:

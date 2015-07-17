@@ -9,8 +9,7 @@
 
 LocalizationManager::LocalizationManager()
 {
-
-	// Create the first particle in the middle of the map with some default angle
+	// Create the first particle
 	Location* firstParticleLoc = new Location(/*Map::getInstance()->configM.getStartLocationX(),
 											  Map::getInstance()->configM.getStartLocationY(),
 											  Map::getInstance()->configM.getStartLocationYaw()*/1,2,3);

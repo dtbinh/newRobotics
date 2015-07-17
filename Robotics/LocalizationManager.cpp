@@ -34,7 +34,7 @@ LocalizationManager::~LocalizationManager()
 	// TODO Auto-generated destructor stub
 }
 
-void LocalizationManager::UpdateParticles(Robot* robot, double deltaX, double deltaY, double deltaYaw)
+void LocalizationManager::updateParticles(Robot* robot, double deltaX, double deltaY, double deltaYaw)
 {
 	int currBelief;
 
@@ -63,7 +63,7 @@ void LocalizationManager::UpdateParticles(Robot* robot, double deltaX, double de
 }
 
 
-Particle* LocalizationManager::GetBestParticle()
+Particle* LocalizationManager::getBestParticle()
 {
 	int bestParticle = 0;
 

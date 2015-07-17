@@ -15,8 +15,6 @@
 #include "ConfigurationManager.h"
 
 class LocalizationManager {
-private:
-	ConfigurationManager* _configM;
 public:
 	LocalizationManager();
 	virtual ~LocalizationManager();
@@ -24,8 +22,8 @@ public:
 	std::vector<Particle*> particleVec;
 	int particlesCount;
 
-	void UpdateParticles(Robot* robot, double deltaX, double deltaY, double deltaYaw);
-	Particle* GetBestParticle();
+	void updateParticles(Robot* robot, double deltaX, double deltaY, double deltaYaw);
+	Particle* getBestParticle();
 };
 
 #endif /* LOCALIZATIONMANAGER_H_ */

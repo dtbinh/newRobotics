@@ -12,17 +12,46 @@ Manager::Manager(Robot* robot, PathPlanner* pathPlanner) : _robot(robot), _pathP
 }
 void Manager::run()
 {
-	_robot->Read();
-	if(!(_curr->startCond()))
-		return;
-	_curr->action();
-	while(_curr !=NULL)
+	for(int i = 0; i< 5; i++)
 	{
-		while(_curr->stopCond() == false)
+		_robot->Read();
+	}
+
+	double prevX = 0, prevY = 0, prevYaw = 0;
+	double newX, newY, newYaw;
+
+	while (_curr != NULL)
+	{
+		while(!_curr->stopCond())
 		{
 			_curr->action();
 			_robot->Read();
+
+			// Get the robot's new location
+			newX = _robot->getXPos();
+			newY = _robot->getYPos();
+			newYaw = _robot->getYaw();
+
+			// Use some noise to simulate real world wrong reads.
+			// TODO: get rid of it in production
+			newX = newX + ((double) rand() / (RAND_MAX)) * 2 * NOISE_POSITION_FACTOR - NOISE_POSITION_FACTOR;
+			newY = newY + ((double) rand() / (RAND_MAX)) * 2 * NOISE_POSITION_FACTOR - NOISE_POSITION_FACTOR;
+			newYaw = newYaw + ((double) rand() / (RAND_MAX)) * 2 * NOISE_YAW_FACTOR - NOISE_YAW_FACTOR;
+
+			// Update particles and printing the map
+			_localizationManager.updateParticles(_robot, newX - prevX, newY - prevY, newYaw - prevYaw);
+
+			cout << "Robot's position: " << newX << ", " << newY << ", " << newYaw << endl;
+
+			Particle* best = _localizationManager.getBestParticle();
+			cout << "Robot's position by particles: " << best->loc->x << ", "
+				 << best->loc->y << ", " << best->loc->yaw << endl;
+
+			prevX = newX;
+			prevY = newY;
+			prevYaw = newYaw;
 		}
+
 		_curr = _curr->selectNextBehavior();
 		_robot->Read();
 	}

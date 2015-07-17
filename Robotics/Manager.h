@@ -12,6 +12,10 @@
 #include "PathPlanning/PathPlanner.h"
 #include "LocalizationManager.h"
 
+// Noise to simulate real world wrong reads.
+#define NOISE_POSITION_FACTOR 0.02
+#define NOISE_YAW_FACTOR 0.01
+
 class Manager {
 	Behavior* _curr;
 	Robot* _robot;

@@ -1,19 +1,11 @@
-#ifndef TURNRIGHT_H_
-#define TURNRIGHT_H_
+#include "Behavior.h"
 
-#include "Behaviors.h"
-
-class TurnRight : public Behaviors {
+class TurnRight: public Behavior {
 public:
-	TurnRight(Robot* robot);
-	TurnRight(Robot* robot, float turnAngle);
-	void action();
+	TurnRight(Robot* robot) : Behavior(robot) {}
 	virtual ~TurnRight();
+	void action();
 	bool startCond();
 	bool stopCond();
-	void stop();
-private:
-	int angle;
+	double availableSpace();
 };
-
-#endif

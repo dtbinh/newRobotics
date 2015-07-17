@@ -24,7 +24,7 @@ public:
 
 	Behaviors* addNextBehavior(Behaviors* behavior);
 
-	~Behaviors();
+	virtual ~Behaviors();
 
 	static int degreeToIndex(int deg)
 	{

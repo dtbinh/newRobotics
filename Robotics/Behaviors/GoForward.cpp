@@ -10,7 +10,8 @@ bool GoForward::startCond()
 
 bool GoForward::stopCond()
 {
-	//return (_robot->turn());
+	// if forward not free or way point achieved
+	return false;
 }
 
 void GoForward::action()

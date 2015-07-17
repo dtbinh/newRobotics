@@ -8,32 +8,19 @@
 #include "ObstacleAvoidPlan.h"
 
 ObstacleAvoidPlan::ObstacleAvoidPlan() {
-	const char* path = "/home/colman/Desktop/newRobotics/Robotics/parameters.txt";
-	_configurationManager = new ConfigurationManager(path);
+	const char* CONFIGURATION_PATH = "parameters.txt";
+	_configurationManager = new ConfigurationManager(CONFIGURATION_PATH);
 
-	char* mapFilePath = _configurationManager->mapPath;
-
-	_map = new Map(mapFilePath);
-
-	Matrix<Utils::CELL_STATUS>* originalMap = _map->getOriginalMap();
-	Matrix<Utils::CELL_STATUS>* blownMap = _map->getBlownMap();
+	_map = new Map(_configurationManager->mapPath);
 
 	// Path Finding
-	PathFinder* pathFinder = new PathFinder(blownMap);
+	PathFinder* pathFinder = new PathFinder(_map->getBlownMap());
 	_astarPath = pathFinder->aStar(_configurationManager->yStartLocation, _configurationManager->xStartLocation,
 								   _configurationManager->yTarget, _configurationManager->xTarget);
 
 	// Get way points
 	WaypointsManager* waypointMgr = new WaypointsManager(_astarPath);
 	_waypoints = waypointMgr->getWayPoints();
-
-	// Bonus
-}
-
-ObstacleAvoidPlan::~ObstacleAvoidPlan() {
-	// TODO Auto-generated destructor stub
-	delete _map;
-	delete _configurationManager;
 }
 
 void ObstacleAvoidPlan::printAstarToPng(){
@@ -43,5 +30,11 @@ void ObstacleAvoidPlan::printAstarToPng(){
 		mapToPrintAstarOn->set(_astarPath[i]->y, _astarPath[i]->x, Utils::OCCUPIED);
 	}
 
-	_map->saveMapToPng(mapToPrintAstarOn, "/home/colman/Desktop/waypointss.png");
+	char* imgPath = "/home/colman/Desktop/astar.png";
+	_map->saveMapToPng(mapToPrintAstarOn, imgPath);
+}
+
+ObstacleAvoidPlan::~ObstacleAvoidPlan() {
+	delete _map;
+	delete _configurationManager;
 }

@@ -8,7 +8,7 @@
 #ifndef MAP_H_
 #define MAP_H_
 
-#include "lodepng.h";
+#include "lodepng.h"
 #include "Matrix.h"
 #include "Utils.h"
 #include "Point.h"

@@ -7,7 +7,8 @@
 
 #include "Manager.h"
 
-Manager::Manager(Robot* robot, PathPlanner* pathPlanner) : _robot(robot), _pathPlanner(pathPlanner) {
+Manager::Manager(Robot* robot, PathPlanner* pathPlanner) {
+	_robot = robot;
 	//_curr = pln->getStartPoint();
 }
 void Manager::run()

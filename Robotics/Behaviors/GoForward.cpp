@@ -17,7 +17,7 @@ void GoForward::action()
 	_robot->setSpeed(FORWARD_SPEED,0.0);
 }
 
-double GoForward::availableSpace()
+/*double GoForward::availableSpace()
 {
 	double totalDistance = 0;
 	for(int i=RIGHT_LIMIT_LASER_INDEX; i<LEFT_LIMIT_LASER_INDEX; i++)
@@ -26,7 +26,7 @@ double GoForward::availableSpace()
 	}
 
 	return totalDistance;
-}
+}*/
 
 bool GoForward::stopCond()
 {

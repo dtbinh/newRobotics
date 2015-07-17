@@ -7,5 +7,5 @@ public:
 	void action();
 	bool startCond();
 	bool stopCond();
-	double availableSpace();
+	//double availableSpace();
 };

@@ -11,7 +11,6 @@
 #include "../Map.h"
 #include "../Utils.h"
 #include "PathFinder.h"
-#include "../ConfigurationManager.h"
 #include "WaypointsManager.h"
 
 class PathPlanner {
@@ -20,7 +19,7 @@ private:
 	vector<Position*> _astarPath;
 	vector<Position*> _waypoints;
 public:
-	PathPlanner(ConfigurationManager* configurationManager);
+	PathPlanner();
 	virtual ~PathPlanner();
 
 	vector<Position*> getWaypoints() const{ return _waypoints; };

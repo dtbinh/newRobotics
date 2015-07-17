@@ -13,9 +13,9 @@ using namespace std;
 
 int main(){
 	//Robot robot("localhost", 6665,1);
-	const char* CONFIGURATION_PATH = "parameters.txt";
-	ConfigurationManager* cm = new ConfigurationManager(CONFIGURATION_PATH);
-	PathPlanner pathPlanner(cm);
+	//const char* CONFIGURATION_PATH = "parameters.txt";
+	//Utils::configurationManager = new ConfigurationManager(CONFIGURATION_PATH);
+	PathPlanner pathPlanner;
 
 	//Manager manager(&robot, &pathPlanner);
 	//manager.run();

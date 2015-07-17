@@ -10,9 +10,9 @@
 LocalizationManager::LocalizationManager()
 {
 	// Create the first particle
-	Location* firstParticleLoc = new Location(/*Map::getInstance()->configM.getStartLocationX(),
-											  Map::getInstance()->configM.getStartLocationY(),
-											  Map::getInstance()->configM.getStartLocationYaw()*/1,2,3);
+	Location* firstParticleLoc = new Location(Utils::configurationManager->xStartLocation,
+			Utils::configurationManager->yStartLocation,
+			Utils::configurationManager->yawStartLocation);
 
 	Particle* firstParticle = new Particle(firstParticleLoc, 1);
 	particleVec.push_back(firstParticle);

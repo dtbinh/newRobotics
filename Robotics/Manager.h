@@ -10,10 +10,14 @@
 #include "Robot.h"
 #include "Behaviors/Behavior.h"
 #include "PathPlanning/PathPlanner.h"
+#include "LocalizationManager.h"
 
 class Manager {
 	Behavior* _curr;
 	Robot* _robot;
+	PathPlanner* _pathPlanner;
+	LocalizationManager _localizationManager;
+
 public:
 	Manager(Robot* robot, PathPlanner* pathPlanner);
 	void run();

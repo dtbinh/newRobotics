@@ -18,6 +18,8 @@ int main(){
 	//Manager manager(&robot, &pln);
 	//manager.run();
 
+	//Bonus
+	pln.printAstarToPng();
 
 	return 0;
 }

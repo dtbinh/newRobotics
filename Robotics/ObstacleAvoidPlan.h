@@ -17,13 +17,17 @@
 class ObstacleAvoidPlan {
 private:
 	Map* _map;
+	vector<Point*> _astarPath;
+	ConfigurationManager* _configurationManager;
 	vector<Point*> _waypoints;
 public:
 	ObstacleAvoidPlan();
 	virtual ~ObstacleAvoidPlan();
 
 	vector<Point*> getWaypoints() const{ return _waypoints; };
-	Map* getMap() const{ return _map; };;
+	Map* getMap() const{ return _map; };
+	ConfigurationManager* getCM() const{ return _configurationManager; };
+	void printAstarToPng();
 };
 
 #endif /* OBSTACLEAVOIDPLAN_H_ */

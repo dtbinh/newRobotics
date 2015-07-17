@@ -21,6 +21,8 @@ int main(){
 	//Bonus
 	pln.printAstarToPng();
 
+	cout << "finished running";
+
 	return 0;
 }
 

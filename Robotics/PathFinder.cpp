@@ -44,9 +44,9 @@ Point* PathFinder::getPoint(int row, int col){
 }
 
 
-vector<Point*> PathFinder::aStar(float row1, float col1, float row2, float col2){
+vector<Position*> PathFinder::aStar(float row1, float col1, float row2, float col2){
 
-    vector<Point*> path;
+    vector<Position*> path;
 
     // Define points to work with
     Point *start = getPoint(row1, col1);
@@ -170,7 +170,7 @@ vector<Point*> PathFinder::aStar(float row1, float col1, float row2, float col2)
     // Resolve the path starting from the end point
     while (current->hasParent() && current != start)
     {
-        path.push_back(current);
+        path.push_back(new Position(current->x, current->y));
         current = current->getParent();
         n ++;
     }

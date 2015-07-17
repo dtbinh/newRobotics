@@ -11,15 +11,19 @@
 #include <vector>
 #include <iostream>
 #include "Point.h"
+#include "Position.h"
 
 class WaypointsManager {
 private:
-	std::vector <Point*> _waypointVector;
-
+	std::vector <Position*> _waypointVector;
+	int _wpIndex = 0;
 public:
+	Position* currWP;
+
 	WaypointsManager();
-	WaypointsManager(std::vector <Point*> path);
-	std::vector <Point*> getWayPoints();
+	WaypointsManager(std::vector <Position*> path);
+	std::vector <Position*>  getWayPoints() const {return _waypointVector; };
+	Position* getNextWayPoint();
 	virtual ~WaypointsManager();
 };
 

@@ -17,9 +17,7 @@ ConfigurationManager::ConfigurationManager(const char* configurationFilePath) {
 
 	while (!inputFile.eof()){
 		inputFile.getline(attribute_name, 100, ' ');
-		cout << attribute_name << endl;
 		inputFile.getline(file_data[counter],100, '\n');
-		cout << file_data[counter] << endl;
 		counter++;
 	}
 

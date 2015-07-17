@@ -27,7 +27,7 @@ void ObstacleAvoidPlan::printAstarToPng(){
 	Matrix<Utils::CELL_STATUS>* mapToPrintAstarOn = _map->getOriginalMap();
 
 	for(unsigned int i=0; i < _astarPath.size(); i++){
-		mapToPrintAstarOn->set(_astarPath[i]->y, _astarPath[i]->x, Utils::OCCUPIED);
+		mapToPrintAstarOn->set(_astarPath[i]->getY(), _astarPath[i]->getX(), Utils::OCCUPIED);
 	}
 
 	char* imgPath = "/home/colman/Desktop/astar.png";

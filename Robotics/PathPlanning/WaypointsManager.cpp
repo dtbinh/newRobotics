@@ -13,8 +13,10 @@ WaypointsManager::WaypointsManager()
 
 }
 
-WaypointsManager::WaypointsManager(std::vector <Point*> path)
+WaypointsManager::WaypointsManager(std::vector <Position*> path)
 {
+	currWP = new Position(0,0);
+
 	// Check the direction of the first point
 	int diffX = (path[1]->getX() - path[0]->getX());
 	int diffY = (path[1]->getY() - path[0]->getY());
@@ -33,14 +35,22 @@ WaypointsManager::WaypointsManager(std::vector <Point*> path)
 
 			diffX = nextDiffX;
 		    diffY = nextDiffY;
-
-		  //  std::cout << path[i-1]->getX() << "," << path[i-1]->getY() << std::endl;
 		}
 	}
+	currWP = _waypointVector[0];
 }
 
-std::vector <Point*> WaypointsManager::getWayPoints(){
-	return _waypointVector;
+Position* WaypointsManager::getNextWayPoint() {
+	Position* nextWP = NULL;
+
+	if (_wpIndex < _waypointVector.size())
+	{
+		_wpIndex += 1;
+		nextWP = _waypointVector[_wpIndex];
+		currWP = nextWP;
+	}
+
+	return nextWP;
 }
 
 WaypointsManager::~WaypointsManager()

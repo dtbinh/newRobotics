@@ -12,8 +12,9 @@
 #include <vector>
 #include <cstddef>
 #include "Point.h"
-#include "Location.h"
-#include "Matrix.h"
+#include "../Position.h"
+#include "../Location.h"
+#include "../Matrix.h"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ public:
 	PathFinder();
 	PathFinder(Matrix<Utils::CELL_STATUS>* map);
 	virtual ~PathFinder();
-	vector<Point*> aStar(float x1, float y1, float x2, float y2);
+	vector<Position*> aStar(float x1, float y1, float x2, float y2);
 	Matrix<Point*>* _robotsGrid;
 	Matrix<Utils::CELL_STATUS>* _map;
 	Point* getPoint(int x, int y);

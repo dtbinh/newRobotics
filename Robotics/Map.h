@@ -11,7 +11,7 @@
 #include "lodepng.h"
 #include "Matrix.h"
 #include "Utils.h"
-#include "Point.h"
+#include "PathPlanning/Point.h"
 #include "ConfigurationManager.h"
 #include <cmath>
 

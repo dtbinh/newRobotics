@@ -7,9 +7,9 @@
 
 #include "Manager.h"
 
-Manager::Manager(Robot* robot, Plan* pln) {
+Manager::Manager(Robot* robot, PathPlanner* pathPlanner) {
 	_robot = robot;
-	_curr = pln->getStartPoint();
+	//_curr = pln->getStartPoint();
 }
 void Manager::run()
 {
@@ -24,7 +24,7 @@ void Manager::run()
 			_curr->action();
 			_robot->Read();
 		}
-		_curr = _curr->selectNext();
+		_curr = _curr->selectNextBehavior();
 		_robot->Read();
 	}
 }

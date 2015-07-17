@@ -7,19 +7,23 @@
 
 #include <iostream>
 #include "Robot.h"
-#include "ObstacleAvoidPlan.h"
+#include "PathPlanning/PathPlanner.h"
 
 using namespace std;
 
 int main(){
 	//Robot robot("localhost", 6665,1);
-	ObstacleAvoidPlan pln;
+	const char* CONFIGURATION_PATH = "parameters.txt";
+	ConfigurationManager* cm = new ConfigurationManager(CONFIGURATION_PATH);
+	PathPlanner pathPlanner(cm);
 
-	//Manager manager(&robot, &pln);
+	//Manager manager(&robot, &pathPlanner);
 	//manager.run();
 
 	//Bonus
-	pln.printAstarToPng();
+	pathPlanner.printAstarToPng();
+
+	cout << "finished running";
 
 	return 0;
 }

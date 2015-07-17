@@ -9,7 +9,7 @@
 #define POINT_H_
 
 #include <cmath>
-#include "Location.h"
+#include "../Location.h"
 #include <cstddef>
 
 class Point {

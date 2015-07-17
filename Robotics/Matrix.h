@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include "Utils.h"
-#include "Point.h"
+#include "PathPlanning/Point.h"
 #include <stdexcept>
 
 using namespace std;

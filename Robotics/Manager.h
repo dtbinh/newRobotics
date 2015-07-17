@@ -8,14 +8,14 @@
 #ifndef MANAGER_H_
 #define MANAGER_H_
 #include "Robot.h"
-#include "Behaviors/Behaviors.h"
-#include "Plan.h"
+#include "Behaviors/Behavior.h"
+#include "PathPlanning/PathPlanner.h"
 
 class Manager {
-	Behaviors* _curr;
+	Behavior* _curr;
 	Robot* _robot;
 public:
-	Manager(Robot* robot, Plan* pln);
+	Manager(Robot* robot, PathPlanner* pathPlanner);
 	void run();
 	virtual ~Manager();
 };

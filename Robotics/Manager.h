@@ -8,6 +8,9 @@
 #ifndef MANAGER_H_
 #define MANAGER_H_
 #include "Robot.h"
+#include "Behaviors/Behavior.h"
+#include "Plan.h"
+
 class Manager {
 	Behavior* _curr;
 	Robot* _robot;

@@ -13,12 +13,10 @@ PathFinder::PathFinder(Matrix<Utils::CELL_STATUS>* map) {
 }
 
 PathFinder::~PathFinder() {
-	// TODO Auto-generated destructor stubb
 	delete _robotsGrid;
 }
 
 Point* PathFinder::getPoint(int row, int col){
-
 	if (_robotsGrid->get(row, col) == NULL){
 		bool isPointWalkable = _map->get(row,col) != Utils::OCCUPIED;
 		bool isPointNearObsacles = false;

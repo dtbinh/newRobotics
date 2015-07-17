@@ -7,13 +7,13 @@
 
 #include "PathPlanner.h"
 
-PathPlanner::PathPlanner(ConfigurationManager* configurationManager) {
-	_map = new Map(configurationManager->mapPath);
+PathPlanner::PathPlanner() {
+	_map = Map::getInstance();
 
 	// Path Finding
 	PathFinder* pathFinder = new PathFinder(_map->getBlownMap());
-	_astarPath = pathFinder->aStar(configurationManager->yStartLocation, configurationManager->xStartLocation,
-								   configurationManager->yTarget, configurationManager->xTarget);
+	_astarPath = pathFinder->aStar(Utils::configurationManager->yStartLocation, Utils::configurationManager->xStartLocation,
+			Utils::configurationManager->yTarget, Utils::configurationManager->xTarget);
 
 	// Get way points
 	WaypointsManager* waypointMgr = new WaypointsManager(_astarPath);

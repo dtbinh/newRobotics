@@ -7,8 +7,18 @@
 
 #include "Map.h"
 
-Map::Map(char* mapPath) {
-	loadPng(mapPath);
+Map* Map::_instance = NULL;
+
+Map* Map::getInstance(){
+	if (_instance == NULL){
+		_instance = new Map();
+	}
+
+	return _instance;
+}
+
+Map::Map() {
+	loadPng(Utils::configurationManager->mapPath);
 	blowMap();
 }
 
@@ -87,8 +97,9 @@ void Map::blowMap() {
 	// Blow map obsticles by robot radius
 	int buffer = 2.5;
 	int robotRadius = ceil(
-			(sqrt(pow(30 / 2, 2) + pow(30 / 2, 2))
-					+ buffer) / 2.5);
+			(sqrt(pow(Utils::configurationManager->robotLength / 2, 2) +
+				  pow(Utils::configurationManager->robotWidth / 2, 2))
+					+ buffer) / Utils::configurationManager->mapResolution);
 
 	// Blow map more softly
 	//int robotRadius = ceil(((30/2 + 30/2)/2) / 2.5);

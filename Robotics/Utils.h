@@ -7,12 +7,14 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#include "ConfigurationManager.h"
+
 class Utils {
 public:
 	Utils();
 	virtual ~Utils();
 	enum CELL_STATUS {FREE, OCCUPIED, BLOWN};
-	static char* pngPath;
+	static ConfigurationManager* configurationManager;
 
 	// Particles
 	static const int PARTICLES_NUMBER = 100;

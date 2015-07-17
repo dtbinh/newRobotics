@@ -16,12 +16,15 @@
 #include <cmath>
 
 class Map {
+private:
 	Matrix<Utils::CELL_STATUS>* _originalMap;
 	Matrix<Utils::CELL_STATUS>* _blownMap;
 
 	int _height, _width;
+	static Map* _instance;
+	Map();
 public:
-	Map(char* mapPath);
+	static Map* getInstance();
 	virtual ~Map();
 
 	void loadPng(char* mapPath);

@@ -37,10 +37,55 @@ WaypointsManager::WaypointsManager(std::vector <Position*> path)
 		    diffY = nextDiffY;
 		}
 	}
+
+	std::reverse(_waypointVector.begin(), _waypointVector.end());
+	_waypointVector.push_back(new Position(Utils::configurationManager->xTarget,
+				Utils::configurationManager->yTarget));
+
+	for (int i=0 ;i<_waypointVector.size(); i++){
+		cout<<_waypointVector[i]->getX()<< " " <<_waypointVector[i]->getY()<<endl;
+	}
 	currWP = _waypointVector[0];
+
+	this->optimizePath();
+}
+
+void WaypointsManager::optimizePath()
+{
+	bool hasChanged = true;
+	while(hasChanged){
+		hasChanged = false;
+		vector<Position*> optimizedPath;
+		unsigned int i;
+		for(i=0; i<_waypointVector.size()-2;i++){
+			Position* p1 = _waypointVector[i];
+			Position* p3 = _waypointVector[i+2];
+
+			optimizedPath.push_back(p1);
+
+			bool isClear = isClearPath(p1->getX(), p1->getY(),p3->getX(), p3->getY());
+			if(isClear){
+				i++;//skip the middleman
+				hasChanged = true;
+			}
+		}
+		if(i==_waypointVector.size()-2){ //push the one before last vertex
+			optimizedPath.push_back(_waypointVector[_waypointVector.size()-2]);
+		}
+		optimizedPath.push_back(_waypointVector[_waypointVector.size()-1]); // push the last vertex
+		_waypointVector = optimizedPath;
+	}
+}
+
+bool WaypointsManager::isLastWayPoint() {
+	return (_wpIndex == _waypointVector.size() - 1);
 }
 
 Position* WaypointsManager::getCurrWayPoint() {
+	if (_wpIndex >= _waypointVector.size()){
+		return NULL;
+	}
+
 	return _waypointVector[_wpIndex];
 }
 
@@ -49,7 +94,7 @@ Position* WaypointsManager::getNextWayPoint() {
 
 	if (_wpIndex < _waypointVector.size())
 	{
-		_wpIndex += 1;
+		_wpIndex++;
 		nextWP = _waypointVector[_wpIndex];
 		currWP = nextWP;
 	}
@@ -67,7 +112,9 @@ bool WaypointsManager::isInWayPoint(double x,double y)
 	std::cout << "way point y" << " " << currWP->getY() << " " << "y" << " "  << y << std::endl;
 	std::cout << "distance: " << distance << std::endl;
 
-	if (distance/**Utils::configurationManager->gridResolution*/ <= Utils::DISTANCE_TOLERANCE)
+	int distanceTolerance = this->isLastWayPoint() ? 3 : Utils::DISTANCE_TOLERANCE;
+
+	if (distance/**Utils::configurationManager->gridResolution*/ <= distanceTolerance)
 	{
 		std::cout << "waypoint achieved----------------------------------- " << std::endl;
 		this->getNextWayPoint();

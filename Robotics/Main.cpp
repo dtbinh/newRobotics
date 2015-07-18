@@ -18,7 +18,6 @@ int main(){
 	PathPlanner* pathPlanner = new PathPlanner();
 	AvoidObstaclesPlan* avoidObstaclesPlan = new AvoidObstaclesPlan(&robot, pathPlanner->getWaypointsMgr());
 	vector<Position*> points = pathPlanner->getWaypointsMgr()->getWayPoints();
-	cout << points.size();
 	Manager manager(&robot, pathPlanner, avoidObstaclesPlan);
 	manager.run();
 

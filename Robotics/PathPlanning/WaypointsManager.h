@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include "Point.h"
 #include "../Position.h"
 #include "../Utils.h"
@@ -27,8 +28,10 @@ public:
 	std::vector <Position*>  getWayPoints() const {return _waypointVector; };
 	Position* getCurrWayPoint();
 	Position* getNextWayPoint();
+	bool isLastWayPoint();
 	bool isInWayPoint(double x,double y);
 	bool isClearPath(int x1, int y1, int x2, int y2);
+	void optimizePath();
 	virtual ~WaypointsManager();
 };
 

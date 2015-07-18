@@ -46,7 +46,7 @@ public:
 	static const float LEFT_LASER_PROXY_VALUE = 614;
 
 	// Behavior
-	static const float DISTANCE_TOLERANCE = 3;
+	static const float DISTANCE_TOLERANCE = 10;
 	static const float MAX_LASER_INDEX = 665;
 };
 

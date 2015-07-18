@@ -30,6 +30,7 @@ void Manager::run() {
 
 	while (_curr != NULL) {
 		while (!_curr->stopCond()) {
+			cout<<"action!"<<endl;
 			_curr->action();
 			_robot->Read();
 
@@ -45,8 +46,8 @@ void Manager::run() {
 			//newYaw = newYaw + ((double) rand() / (RAND_MAX)) * 2 * NOISE_YAW_FACTOR - NOISE_YAW_FACTOR;
 
 			// Update particles
-			_localizationManager.updateParticles(_robot, newX - prevX,
-					newY - prevY, newYaw - prevYaw);
+			//_localizationManager.updateParticles(_robot, newX - prevX,
+				//	newY - prevY, newYaw - prevYaw);
 
 			//cout << "Robot's position: " << newX << ", " << newY << ", "
 				//	<< newYaw << endl;
@@ -60,6 +61,7 @@ void Manager::run() {
 			prevYaw = newYaw;
 		}
 
+		_robot->setSpeed(0.0,0.0);
 		_curr = _curr->selectNextBehavior();
 		_robot->Read();
 	}

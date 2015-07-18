@@ -2,6 +2,10 @@
 
 bool TurnRight::startCond()
 {
+	if (_waypointMgr->getCurrWayPoint() == NULL){
+		return false;
+	}
+
 	// Turn right only if none of the right side laser indexes found obstacle
 	for(int i=0; i<CENTER_LASER_INDEX; i++)
 	{

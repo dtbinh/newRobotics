@@ -16,7 +16,7 @@ void TurnLeft::action()
 	_robot->setSpeed(0.0, ROTATION_SPEED);
 }
 
-/*double TurnLeft::availableSpace()
+double TurnLeft::availableSpace()
 {
 	double totalDistance = 0;
 	for(int i=CENTER_LASER_INDEX; i<Utils::MAX_LASER_INDEX; i++)
@@ -25,7 +25,7 @@ void TurnLeft::action()
 	}
 
 	return totalDistance;
-}*/
+}
 
 bool TurnLeft::stopCond()
 {

@@ -16,7 +16,7 @@ void TurnRight::action()
 	_robot->setSpeed(0.0,-ROTATION_SPEED);
 }
 
-/*double TurnRight::availableSpace()
+double TurnRight::availableSpace()
 {
 	double totalDistance = 0;
 	for(int i=0; i<CENTER_LASER_INDEX; i++)
@@ -25,7 +25,7 @@ void TurnRight::action()
 	}
 
 	return totalDistance;
-}*/
+}
 
 bool TurnRight::stopCond()
 {

@@ -12,13 +12,14 @@
 #include "Behaviors/GoForward.h"
 #include "Behaviors/TurnLeft.h"
 #include "Behaviors/TurnRight.h"
+#include "PathPlanning/WaypointsManager.h"
 
 class AvoidObstaclesPlan {
 	Robot* _robot;
 	Behavior** _behaviorsArr;
 	Behavior* _startBehavior;
 public:
-	AvoidObstaclesPlan(Robot* robot);
+	AvoidObstaclesPlan(Robot* robot, WaypointsManager* waypointsMgr);
 	Behavior* startBehavior();
 	virtual ~AvoidObstaclesPlan();
 };

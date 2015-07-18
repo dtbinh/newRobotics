@@ -43,10 +43,10 @@ Particle* Particle::getSon()
 	Location *newLoc = loc;
 
 	// Randomize the location of the new cell to be around the current cell
-	newLoc->x += (Utils::CELL_SIZE) * pow(-1, rand());
-	newLoc->y += (Utils::CELL_SIZE) * pow(-1, rand());
+	newLoc->x += /*(Utils::CELL_SIZE) * */pow(-1, rand());
+	newLoc->y += /*(Utils::CELL_SIZE) * */pow(-1, rand());
 	newLoc->yaw += (rand() % 30 - 15);
-	Particle* noy = new Particle(newLoc, 1);
+
 	return new Particle(newLoc, this->belief);
 }
 
@@ -101,7 +101,8 @@ double Particle::probByMeasure(Robot* robot)
 
 		// Get the value in the map's cell that represents the obstacle location
 		int obstacleCurrCellValue =
-				Map::getInstance()->getOriginalMap()->get(loc->y / Utils::CELL_SIZE,loc->x / Utils::CELL_SIZE);
+				Map::getInstance()->getOriginalMap()->get(loc->y, loc->x);
+		//Map::getInstance()->getOriginalMap()->get(loc->y / Utils::CELL_SIZE,loc->x / Utils::CELL_SIZE);
 
 		// if the distance is too large, assume that there is no obstacle in this index
 		// and if the distance is too short don't consider it as an obstacle because its the robot itself
@@ -138,6 +139,6 @@ double Particle::getRadianByIndex(int index)
 
 double Particle::laserIndexToLaserAngle(int index)
 {
-	return ((index * 0.36 - 120.0) / 180.0) * M_PI;
+	return ((index * Utils::ANGULAR_RESULUTION - 120.0) / 180.0) * M_PI;
 }
 

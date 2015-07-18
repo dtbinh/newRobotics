@@ -40,6 +40,10 @@ WaypointsManager::WaypointsManager(std::vector <Position*> path)
 	currWP = _waypointVector[0];
 }
 
+Position* WaypointsManager::getCurrWayPoint() {
+	return _waypointVector[_wpIndex];
+}
+
 Position* WaypointsManager::getNextWayPoint() {
 	Position* nextWP = NULL;
 
@@ -51,6 +55,23 @@ Position* WaypointsManager::getNextWayPoint() {
 	}
 
 	return nextWP;
+}
+
+bool WaypointsManager::isInWayPoint(double x,double y)
+{
+	double dx = currWP->getX() - x;
+	double dy = currWP->getY() - y;
+	double distance = sqrt(pow(dx, 2) + pow(dy, 2));
+
+//	std::cout << "way point x"<< " " << currWP->getX() << " " << "x" << " " << x << std::endl;
+//	std::cout << "way point y" << " " << currWP->getY() << " " << "y" << " "  << y << std::endl;
+//	std::cout << "distance: " << distance << std::endl;
+
+	if (distance*Utils::configurationManager->gridResolution <= Utils::DISTANCE_TOLERANCE)
+	{
+		return true;
+	}
+	return false;
 }
 
 WaypointsManager::~WaypointsManager()

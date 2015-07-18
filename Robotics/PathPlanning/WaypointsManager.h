@@ -12,6 +12,7 @@
 #include <iostream>
 #include "Point.h"
 #include "../Position.h"
+#include "../Utils.h"
 
 class WaypointsManager {
 private:
@@ -23,7 +24,9 @@ public:
 	WaypointsManager();
 	WaypointsManager(std::vector <Position*> path);
 	std::vector <Position*>  getWayPoints() const {return _waypointVector; };
+	Position* getCurrWayPoint();
 	Position* getNextWayPoint();
+	bool isInWayPoint(double x,double y);
 	virtual ~WaypointsManager();
 };
 

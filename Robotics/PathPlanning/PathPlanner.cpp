@@ -17,7 +17,7 @@ PathPlanner::PathPlanner() {
 
 	// Get way points
 	WaypointsManager* waypointMgr = new WaypointsManager(_astarPath);
-	_waypoints = waypointMgr->getWayPoints();
+	_waypointsMgr = waypointMgr;
 }
 
 void PathPlanner::printAstarToPng(){

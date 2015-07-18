@@ -17,12 +17,12 @@ class PathPlanner {
 private:
 	Map* _map;
 	vector<Position*> _astarPath;
-	vector<Position*> _waypoints;
+	WaypointsManager* _waypointsMgr;
 public:
 	PathPlanner();
 	virtual ~PathPlanner();
 
-	vector<Position*> getWaypoints() const{ return _waypoints; };
+	WaypointsManager* getWaypointsMgr() const{ return _waypointsMgr; };
 	Map* getMap() const{ return _map; };
 	void printAstarToPng();
 };

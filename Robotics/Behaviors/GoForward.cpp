@@ -17,20 +17,16 @@ void GoForward::action()
 	_robot->setSpeed(FORWARD_SPEED,0.0);
 }
 
-/*double GoForward::availableSpace()
+double GoForward::availableSpace()
 {
-	double totalDistance = 0;
-	for(int i=RIGHT_LIMIT_LASER_INDEX; i<LEFT_LIMIT_LASER_INDEX; i++)
-	{
-		totalDistance += _robot->getLaserScan(i);
-	}
-
-	return totalDistance;
-}*/
+	return 1000.0;
+}
 
 bool GoForward::stopCond()
 {
-	return !startCond();
+	// stop if there is obstacle or we reached way point
+	_robot->Read();
+		return (!startCond() || (_waypointMgr->isInWayPoint(_robot->getXPos(), _robot->getYPos())));
 }
 
 GoForward::~GoForward()

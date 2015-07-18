@@ -38,12 +38,12 @@ void Manager::run()
 			newYaw = _robot->getYaw();
 
 			// Use some noise to simulate real world wrong reads.
-			// TODO: get rid of it in production
-			newX = newX + ((double) rand() / (RAND_MAX)) * 2 * NOISE_POSITION_FACTOR - NOISE_POSITION_FACTOR;
-			newY = newY + ((double) rand() / (RAND_MAX)) * 2 * NOISE_POSITION_FACTOR - NOISE_POSITION_FACTOR;
-			newYaw = newYaw + ((double) rand() / (RAND_MAX)) * 2 * NOISE_YAW_FACTOR - NOISE_YAW_FACTOR;
+			// TODO: get rid of it in production----------------------------------------------------------
+			//newX = newX + ((double) rand() / (RAND_MAX)) * 2 * NOISE_POSITION_FACTOR - NOISE_POSITION_FACTOR;
+			//newY = newY + ((double) rand() / (RAND_MAX)) * 2 * NOISE_POSITION_FACTOR - NOISE_POSITION_FACTOR;
+			//newYaw = newYaw + ((double) rand() / (RAND_MAX)) * 2 * NOISE_YAW_FACTOR - NOISE_YAW_FACTOR;
 
-			// Update particles and printing the map
+			// Update particles
 			_localizationManager.updateParticles(_robot, newX - prevX, newY - prevY, newYaw - prevYaw);
 
 			cout << "Robot's position: " << newX << ", " << newY << ", " << newYaw << endl;

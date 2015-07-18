@@ -9,10 +9,12 @@
 
 LocalizationManager::LocalizationManager()
 {
+	int xStartLocation = Utils::configurationManager->xStartLocation;
+	int yStartLocation = Utils::configurationManager->yStartLocation;
+	int yawStartLocation = Utils::configurationManager->yawStartLocation;
+
 	// Create the first particle
-	Location* firstParticleLoc = new Location(Utils::configurationManager->xStartLocation,
-			Utils::configurationManager->yStartLocation,
-			Utils::configurationManager->yawStartLocation);
+	Location* firstParticleLoc = new Location(xStartLocation,yStartLocation, yawStartLocation);
 
 	Particle* firstParticle = new Particle(firstParticleLoc, 1);
 	particleVec.push_back(firstParticle);
@@ -70,6 +72,7 @@ Particle* LocalizationManager::getBestParticle()
 	// Run over the particles vector
 	for(unsigned int i = 0; i < particleVec.size(); i++)
 	{
+		//cout << i <<" : " << particleVec[i]->belief << endl;
 		// If the current particle got higher belief then the best particle
 		if (particleVec[bestParticle]->belief < particleVec[i]->belief)
 		{

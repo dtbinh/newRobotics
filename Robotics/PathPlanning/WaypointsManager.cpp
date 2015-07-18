@@ -10,13 +10,10 @@
 
 WaypointsManager::WaypointsManager()
 {
-
 }
 
 WaypointsManager::WaypointsManager(std::vector <Position*> path)
 {
-	currWP = new Position(0,0);
-
 	// Check the direction of the first point
 	int diffX = (path[1]->getX() - path[0]->getX());
 	int diffY = (path[1]->getY() - path[0]->getY());
@@ -42,12 +39,12 @@ WaypointsManager::WaypointsManager(std::vector <Position*> path)
 	_waypointVector.push_back(new Position(Utils::configurationManager->xTarget,
 				Utils::configurationManager->yTarget));
 
-	for (int i=0 ;i<_waypointVector.size(); i++){
-		cout<<_waypointVector[i]->getX()<< " " <<_waypointVector[i]->getY()<<endl;
-	}
 	currWP = _waypointVector[0];
 
 	this->optimizePath();
+	for (int i=0 ;i<_waypointVector.size(); i++){
+		cout<<_waypointVector[i]->getX()<< " " <<_waypointVector[i]->getY()<<endl;
+	}
 }
 
 void WaypointsManager::optimizePath()
@@ -108,15 +105,14 @@ bool WaypointsManager::isInWayPoint(double x,double y)
 	double dy = currWP->getY() - y;
 	double distance = sqrt(pow(dx, 2) + pow(dy, 2));
 
-	std::cout << "way point x"<< " " << currWP->getX() << " " << "x" << " " << x << std::endl;
-	std::cout << "way point y" << " " << currWP->getY() << " " << "y" << " "  << y << std::endl;
-	std::cout << "distance: " << distance << std::endl;
+//	std::cout << "way point x"<< " " << currWP->getX() << " " << "x" << " " << x << std::endl;
+//	std::cout << "way point y" << " " << currWP->getY() << " " << "y" << " "  << y << std::endl;
+//	std::cout << "distance: " << distance << std::endl;
 
 	int distanceTolerance = this->isLastWayPoint() ? 3 : Utils::DISTANCE_TOLERANCE;
 
 	if (distance/**Utils::configurationManager->gridResolution*/ <= distanceTolerance)
 	{
-		std::cout << "waypoint achieved----------------------------------- " << std::endl;
 		this->getNextWayPoint();
 		return true;
 	}
@@ -157,7 +153,7 @@ bool WaypointsManager::isClearPath(int x1, int y1, int x2, int y2)
 		smallY 	= y1;
 	}
 
-	Matrix<Utils::CELL_STATUS>* map = Map::getInstance()->getOriginalMap();
+	Matrix<Utils::CELL_STATUS>* map = Map::getInstance()->getBlownMap();
 
 	// Set a linear equation
 	float a = (float)(y2 - y1) / (x2 - x1);

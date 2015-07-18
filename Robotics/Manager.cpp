@@ -25,12 +25,13 @@ void Manager::run() {
 		_curr->selectNextBehavior();
 	}
 
-	double prevX = 0, prevY = 0, prevYaw = 0;
+	double prevX = Utils::configurationManager->xStartLocation,
+		   prevY = Utils::configurationManager->yStartLocation,
+		   prevYaw = Utils::configurationManager->yawStartLocation;
 	double newX, newY, newYaw;
 
 	while (_curr != NULL) {
 		while (!_curr->stopCond()) {
-			cout<<"action!"<<endl;
 			_curr->action();
 			_robot->Read();
 
@@ -46,15 +47,15 @@ void Manager::run() {
 			//newYaw = newYaw + ((double) rand() / (RAND_MAX)) * 2 * NOISE_YAW_FACTOR - NOISE_YAW_FACTOR;
 
 			// Update particles
-			//_localizationManager.updateParticles(_robot, newX - prevX,
-				//	newY - prevY, newYaw - prevYaw);
+			_localizationManager.updateParticles(_robot, newX - prevX,
+					newY - prevY, newYaw - prevYaw);
 
-			//cout << "Robot's position: " << newX << ", " << newY << ", "
-				//	<< newYaw << endl;
+			cout << "Robot's position: " << newX << ", " << newY << ", "
+					<< newYaw << endl;
 
-			//Particle* best = _localizationManager.getBestParticle();
-			//cout << "Robot's position by particles: " << best->loc->x << ", "
-					//<< best->loc->y << ", " << best->loc->yaw << endl;
+			Particle* best = _localizationManager.getBestParticle();
+			cout << "Robot's position by particles: " << best->loc->x << ", "
+					<< best->loc->y << ", " << best->loc->yaw << endl;
 
 			prevX = newX;
 			prevY = newY;

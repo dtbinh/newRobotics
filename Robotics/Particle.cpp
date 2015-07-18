@@ -33,7 +33,9 @@ double Particle::getBeliefAndUpdate(int deltaX, int deltaY, int deltaYaw, Robot*
 
 	predBel = belief * (this->probByMove(deltaX, deltaY, deltaYaw));
 
+	cout << "before " << belief << "predbel " << predBel << endl;
 	belief = Utils::PROB_NORMAL_CONST * predBel * (this->probByMeasure(robot));
+	cout << "after " << belief << endl;
 
 	return belief;
 }
@@ -91,22 +93,27 @@ double Particle::probByMeasure(Robot* robot)
 {
 	double numOfWrongMapCells = 0;
 	double numOfRightMapCells = 0;
+	double currentYaw = Utils::convertDegreeToRadian(loc->yaw);
+	Matrix<Utils::CELL_STATUS>* map = Map::getInstance()->getOriginalMap();
 
 	for (int i=0; i< Utils::MAX_LASER_INDEX; i+=10)
 	{
 		double laserAngle = laserIndexToLaserAngle(i);
 		double disFromObstacle = robot->getLaserScan(i);
-		//double obstacleXPos = loc->x + (disFromObstacle * cos(loc->yaw + laserAngle));
-		//double obstacleYPos = loc->y + (disFromObstacle * sin(loc->yaw + laserAngle));
 
+		double obstacleXPos = loc->x + Utils::convertMeterToPixel((disFromObstacle * cos(currentYaw + laserAngle)));
+		double obstacleYPos = loc->y + Utils::convertMeterToPixel((disFromObstacle * sin(currentYaw + laserAngle)));
+
+		if (obstacleYPos < 0 || obstacleXPos < 0 || obstacleYPos > map->getRows() || obstacleXPos > map->getColumns()){
+			continue;
+		}
 		// Get the value in the map's cell that represents the obstacle location
 		int obstacleCurrCellValue =
-				Map::getInstance()->getOriginalMap()->get(loc->y / 2, loc->x / 2);
-		//Map::getInstance()->getOriginalMap()->get(loc->y / Utils::CELL_SIZE,loc->x / Utils::CELL_SIZE);
+				map->get(obstacleYPos , obstacleXPos) == Utils::OCCUPIED ? 1 : 0;
 
 		// if the distance is too large, assume that there is no obstacle in this index
 		// and if the distance is too short don't consider it as an obstacle because its the robot itself
-		if (disFromObstacle < 4.0 && disFromObstacle > 0.2)
+		if (disFromObstacle < 2.0 && disFromObstacle > 0.2)
 		{
 			switch (obstacleCurrCellValue)
 			{
@@ -126,9 +133,7 @@ double Particle::probByMeasure(Robot* robot)
 
 double Particle::getAngleByIndex(int index)
 {
-
 		return ((double)index * Utils::ANGULAR_RESULUTION - 30);
-
 }
 
 double Particle::getRadianByIndex(int index)

@@ -16,12 +16,8 @@ bool TurnToWaypoint::startCond()
 		return false;
 	}
 
-	std::cout<<"startconD"<<std::endl;
-
-	/*if (_waypointMgr->isClearPath(currWayPoint->getX(), currWayPoint->getY(),
-							  _robot->getXPos(), _robot->getYPos())){*/
-
-		std:cout<<"clear!"<<std::endl;
+	if (_waypointMgr->isClearPath(currWayPoint->getX(), currWayPoint->getY(),
+							  _robot->getXPos(), _robot->getYPos())){
 
 		if (currWayPoint->getX() - _robot->getXPos() == 0){
 			_nextWaypointYaw = _robot->getYPos() - currWayPoint->getY() ? 180 : 0;
@@ -37,7 +33,7 @@ bool TurnToWaypoint::startCond()
 		std::cout<<"robotYaw: "<< _robot->getYaw() <<"nextYaw: "<< _nextWaypointYaw<<std::endl;
 
 		return true;
-	//}
+	}
 
 	return false;
 }

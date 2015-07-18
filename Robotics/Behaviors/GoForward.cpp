@@ -26,7 +26,6 @@ bool GoForward::stopCond()
 {
 	// stop if there is obstacle or we reached way point
 	if (!startCond()){
-		std::cout<<"not gooddddddddddddddddddddddddddddddddddddddddddddddddd"<< std::endl;
 		return false;
 	}
 	return (_waypointMgr->isInWayPoint(_robot->getXPos(), _robot->getYPos()));

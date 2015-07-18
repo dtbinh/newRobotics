@@ -101,7 +101,7 @@ double Particle::probByMeasure(Robot* robot)
 
 		// Get the value in the map's cell that represents the obstacle location
 		int obstacleCurrCellValue =
-				Map::getInstance()->getBlownMap()->get(loc->y / Utils::CELL_SIZE,loc->x / Utils::CELL_SIZE);
+				Map::getInstance()->getOriginalMap()->get(loc->y / Utils::CELL_SIZE,loc->x / Utils::CELL_SIZE);
 
 		// if the distance is too large, assume that there is no obstacle in this index
 		// and if the distance is too short don't consider it as an obstacle because its the robot itself

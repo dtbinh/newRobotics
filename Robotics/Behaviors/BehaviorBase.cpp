@@ -1,4 +1,4 @@
-#include "Behavior.h"
+#include "BehaviorBase.h"
 
 bool Behavior::addNextBehavior(Behavior* behaviorToAdd)
 {
@@ -30,7 +30,7 @@ Behavior* Behavior::selectNextBehavior()
 	// Find the best behavior that can start
 	for(int i=0; i<_nextBehaviorsCount; i++)
 	{
-		double currSpace = _nextBehaviors[i]->availableSpace();
+		double currSpace = 11;//_nextBehaviors[i]->availableSpace();
 		if(_nextBehaviors[i]->startCond() && currSpace > maxAvailableSpace)
 		{
 			bestBehavior = _nextBehaviors[i];

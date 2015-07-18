@@ -1,4 +1,4 @@
-#include "Behavior.h"
+#include "BehaviorBase.h"
 
 class TurnRight: public Behavior {
 public:
@@ -7,5 +7,5 @@ public:
 	void action();
 	bool startCond();
 	bool stopCond();
-	double availableSpace();
+	//double availableSpace();
 };

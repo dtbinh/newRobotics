@@ -8,10 +8,19 @@
 #include <iostream>
 #include "Robot.h"
 #include "PathPlanning/PathPlanner.h"
+#include "Manager.h"
 
 using namespace std;
 
 int main(){
+
+	Robot robot("localhost", 6665);
+	PathPlanner* pathPlanner = new PathPlanner();
+	AvoidObstaclesPlan* avoidObstaclesPlan = new AvoidObstaclesPlan(&robot);
+
+	Manager manager(&robot, pathPlanner, avoidObstaclesPlan);
+	manager.run();
+	/*
 	//Robot robot("localhost", 6665,1);
 	//const char* CONFIGURATION_PATH = "parameters.txt";
 	//Utils::configurationManager = new ConfigurationManager(CONFIGURATION_PATH);
@@ -24,7 +33,7 @@ int main(){
 	pathPlanner.printAstarToPng();
 
 	cout << "finished running";
-
+*/
 	return 0;
 }
 

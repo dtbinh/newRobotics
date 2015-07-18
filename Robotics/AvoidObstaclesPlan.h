@@ -1,17 +1,25 @@
-#ifndef PLNOBSTACLEAVOID_H_
-#define PLNOBSTACLEAVOID_H_
+/*
+ * AvoidObstaclesPlan.h
+ *
+ *  Created on: Jul 17, 2015
+ *      Author: colman
+ */
 
-#include "Plan.h"
-#include "Behaviors.h"
-#include "GoForward.h"
-#include "TurnLeft.h"
-#include "TurnRight.h"
+#ifndef AVOIDOBSRACLESPLAN_H_
+#define AVOIDOBSRACLESPLAN_H_
 
-class AvoidObstaclesPlan: public Plan
-{
+#include "Behaviors/BehaviorBase.h"
+#include "Behaviors/GoForward.h"
+#include "Behaviors/TurnLeft.h"
+#include "Behaviors/TurnRight.h"
+
+class AvoidObstaclesPlan {
+	Robot* _robot;
+	Behavior** _behaviorsArr;
+	Behavior* _startBehavior;
 public:
 	AvoidObstaclesPlan(Robot* robot);
-	Behaviors* startBehavior();
+	Behavior* startBehavior();
 	virtual ~AvoidObstaclesPlan();
 };
 

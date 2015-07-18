@@ -7,9 +7,14 @@
 
 #include "Manager.h"
 
-Manager::Manager(Robot* robot, PathPlanner* pathPlanner) : _robot(robot), _pathPlanner(pathPlanner) {
-	//_curr = pln->getStartPoint();
+Manager::Manager(Robot* robot, PathPlanner* pathPlanner,
+		AvoidObstaclesPlan* avoidObstaclesPlan) {
+	_robot = robot;
+	_pathPlanner = pathPlanner;
+	_avoidObstaclesPlan = avoidObstaclesPlan;
+	_curr = _avoidObstaclesPlan->startBehavior();
 }
+
 void Manager::run()
 {
 	for(int i = 0; i< 5; i++)

@@ -70,17 +70,7 @@ int Point::getGScore(Point *p)
 
 int Point::getHScore(Point *p)
 {
-	int absX = p->x - x;
-
-	if (absX < 0){
-	 absX = absX * -1;
-	}
-	int absY = p->y - y;
-
-	if (absY < 0){
-		absY = absY * -1;
-	}
-    return (absX + absY) * 10;
+    return (fabs(p->x - x) + fabs(p->y - y)) * 10;
 }
 
 int Point::getGScore()

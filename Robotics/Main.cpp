@@ -16,8 +16,9 @@ int main(){
 
 	Robot robot("localhost", 6665);
 	PathPlanner* pathPlanner = new PathPlanner();
+	AvoidObstaclesPlan* avoidObstaclesPlan = new AvoidObstaclesPlan(&robot);
 
-	Manager manager(&robot, pathPlanner);
+	Manager manager(&robot, pathPlanner, avoidObstaclesPlan);
 	manager.run();
 	/*
 	//Robot robot("localhost", 6665,1);

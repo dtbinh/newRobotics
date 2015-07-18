@@ -7,20 +7,20 @@
 
 #include "Manager.h"
 
-Manager::Manager(Robot* robot, PathPlanner* pathPlanner) {
+Manager::Manager(Robot* robot, PathPlanner* pathPlanner,
+		AvoidObstaclesPlan* avoidObstaclesPlan) {
 	_robot = robot;
-	//_curr = pln->getStartPoint();
+	_pathPlanner = pathPlanner;
+	_avoidObstaclesPlan = avoidObstaclesPlan;
+	_curr = _avoidObstaclesPlan->startBehavior();
 }
-void Manager::run()
-{
+void Manager::run() {
 	_robot->Read();
-	if(!(_curr->startCond()))
+	if (!(_curr->startCond()))
 		return;
 	_curr->action();
-	while(_curr !=NULL)
-	{
-		while(_curr->stopCond() == false)
-		{
+	while (_curr != NULL) {
+		while (_curr->stopCond() == false) {
 			_curr->action();
 			_robot->Read();
 		}

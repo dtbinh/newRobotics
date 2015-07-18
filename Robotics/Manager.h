@@ -16,10 +16,11 @@ class Manager {
 	Behavior* _curr;
 	Robot* _robot;
 	PathPlanner* _pathPlanner;
+	AvoidObstaclesPlan* _avoidObstaclesPlan;
 	LocalizationManager _localizationManager;
 
 public:
-	Manager(Robot* robot, PathPlanner* pathPlanner);
+	Manager(Robot* robot, PathPlanner* pathPlanner, AvoidObstaclesPlan* avoidObstaclesPlan);
 	void run();
 	virtual ~Manager();
 };

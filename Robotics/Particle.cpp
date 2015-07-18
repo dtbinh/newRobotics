@@ -96,12 +96,12 @@ double Particle::probByMeasure(Robot* robot)
 	{
 		double laserAngle = laserIndexToLaserAngle(i);
 		double disFromObstacle = robot->getLaserScan(i);
-		double obstacleXPos = loc->x + (disFromObstacle * cos(loc->yaw + laserAngle));
-		double obstacleYPos = loc->y + (disFromObstacle * sin(loc->yaw + laserAngle));
+		//double obstacleXPos = loc->x + (disFromObstacle * cos(loc->yaw + laserAngle));
+		//double obstacleYPos = loc->y + (disFromObstacle * sin(loc->yaw + laserAngle));
 
 		// Get the value in the map's cell that represents the obstacle location
 		int obstacleCurrCellValue =
-				Map::getInstance()->getOriginalMap()->get(loc->y, loc->x);
+				Map::getInstance()->getOriginalMap()->get(loc->y / 2, loc->x / 2);
 		//Map::getInstance()->getOriginalMap()->get(loc->y / Utils::CELL_SIZE,loc->x / Utils::CELL_SIZE);
 
 		// if the distance is too large, assume that there is no obstacle in this index

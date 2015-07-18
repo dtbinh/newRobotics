@@ -13,6 +13,7 @@
 #include "Point.h"
 #include "../Position.h"
 #include "../Utils.h"
+#include "../Map.h"
 
 class WaypointsManager {
 private:
@@ -27,6 +28,7 @@ public:
 	Position* getCurrWayPoint();
 	Position* getNextWayPoint();
 	bool isInWayPoint(double x,double y);
+	bool isClearPath(int x1, int y1, int x2, int y2);
 	virtual ~WaypointsManager();
 };
 

@@ -8,6 +8,7 @@
 #define UTILS_H_
 
 #include "ConfigurationManager.h"
+#include <cmath>
 
 class Utils {
 public:
@@ -15,6 +16,11 @@ public:
 	virtual ~Utils();
 	enum CELL_STATUS {FREE, OCCUPIED, BLOWN};
 	static ConfigurationManager* configurationManager;
+
+	static double convertDegreeToRadian(double degree);
+	static double convertRadianToDegree(double radian);
+	static double convertPixelToMeter(double inPixel);
+	static double convertMeterToPixel(double inMeter);
 
 	// Particles
 	static const int PARTICLES_NUMBER = 100;
@@ -40,7 +46,7 @@ public:
 	static const float LEFT_LASER_PROXY_VALUE = 614;
 
 	// Behavior
-	static const float DISTANCE_TOLERANCE = 0.3;
+	static const float DISTANCE_TOLERANCE = 3;
 	static const float MAX_LASER_INDEX = 665;
 };
 

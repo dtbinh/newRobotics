@@ -25,8 +25,9 @@ double GoForward::availableSpace()
 bool GoForward::stopCond()
 {
 	// stop if there is obstacle or we reached way point
-	_robot->Read();
-		return (!startCond() || (_waypointMgr->isInWayPoint(_robot->getXPos(), _robot->getYPos())));
+	//_robot->Read();
+	std::cout<<_robot->getXPos()<< "," << _robot->getYPos()<< std::endl;
+	return (!startCond() || (_waypointMgr->isInWayPoint(_robot->getXPos(), _robot->getYPos())));
 }
 
 GoForward::~GoForward()

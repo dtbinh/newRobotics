@@ -12,6 +12,7 @@
 #include "Behaviors/GoForward.h"
 #include "Behaviors/TurnLeft.h"
 #include "Behaviors/TurnRight.h"
+#include "Behaviors/TurnToWaypoint.h"
 #include "PathPlanning/WaypointsManager.h"
 
 class AvoidObstaclesPlan {

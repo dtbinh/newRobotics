@@ -17,7 +17,7 @@ void GoForward::action()
 	_robot->setSpeed(FORWARD_SPEED,0.0);
 }
 
-double GoForward::availableSpace()
+double GoForward::getPriority()
 {
 	return 1000.0;
 }

@@ -105,13 +105,13 @@ bool WaypointsManager::isInWayPoint(double x,double y)
 	double dy = currWP->getY() - y;
 	double distance = sqrt(pow(dx, 2) + pow(dy, 2));
 
-//	std::cout << "way point x"<< " " << currWP->getX() << " " << "x" << " " << x << std::endl;
-//	std::cout << "way point y" << " " << currWP->getY() << " " << "y" << " "  << y << std::endl;
-//	std::cout << "distance: " << distance << std::endl;
+	std::cout << "way point x"<< " " << currWP->getX() << " " << "x" << " " << x << std::endl;
+	std::cout << "way point y" << " " << currWP->getY() << " " << "y" << " "  << y << std::endl;
+	std::cout << "distance: " << distance << std::endl;
 
 	int distanceTolerance = this->isLastWayPoint() ? 3 : Utils::DISTANCE_TOLERANCE;
 
-	if (distance/**Utils::configurationManager->gridResolution*/ <= distanceTolerance)
+	if (distance <= distanceTolerance)
 	{
 		this->getNextWayPoint();
 		return true;

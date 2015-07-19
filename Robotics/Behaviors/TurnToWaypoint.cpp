@@ -43,7 +43,7 @@ void TurnToWaypoint::action()
 	_robot->setSpeed(0.0,_isRightTurn * 0.3);
 }
 
-double TurnToWaypoint::availableSpace()
+double TurnToWaypoint::getPriority()
 {
 	return 99999.0;
 }

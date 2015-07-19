@@ -22,7 +22,7 @@ public:
 	void action();
 	bool startCond();
 	bool stopCond();
-	double availableSpace();
+	double getPriority();
 };
 
 #endif /* TURNTOWAYPOINT_H_ */

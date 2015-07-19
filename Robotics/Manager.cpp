@@ -55,7 +55,7 @@ void Manager::run() {
 
 			Particle* best = _localizationManager.getBestParticle();
 			cout << "Robot's position by particles: " << best->loc->x << ", "
-					<< best->loc->y << ", " << best->loc->yaw << endl;
+					<< best->loc->y << ", " << best->loc->yaw << ", " << best->belief << endl;
 
 			prevX = newX;
 			prevY = newY;

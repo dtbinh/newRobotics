@@ -49,7 +49,7 @@ void LocalizationManager::updateParticles(Robot* robot, double deltaX, double de
 		if(currBelief < Utils::MIN_BELIEF_THRESHOLD)
 		{
 			particleVec.erase(particleVec.begin() + i);
-
+			cout << "SIZE: " << particleVec.size() << endl;
 			particlesCount--;
 		}
 		// If the belief of the particle is good and we're missing

@@ -52,9 +52,7 @@ void Manager::run() {
 				continue;
 
 			// Update particles
-				_localizationManager.updateParticles(_robot, deltaX,
-					deltaY,
-						deltaYaw);
+				_localizationManager.updateParticles(_robot, deltaX, deltaY, deltaYaw);
 
 			cout << "Robot's position: " << newX << ", " << newY << ", "
 					<< newYaw << endl;

@@ -21,8 +21,8 @@ public:
 	virtual ~TurnToWaypoint();
 	void action();
 	bool startCond();
-	bool stopCond();
 	double getPriority();
+	bool stopCond();
 };
 
 #endif /* TURNTOWAYPOINT_H_ */

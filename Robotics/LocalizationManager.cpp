@@ -20,8 +20,7 @@ LocalizationManager::LocalizationManager()
 	particleVec.push_back(firstParticle);
 	particlesCount = 1;
 
-	// Create all other particles. Each time we create the particle
-	// as the son of the last one we created.
+	// Create all particles
 	for(int i = 1; i < Utils::PARTICLES_NUMBER; i++)
 	{
 		Particle* currentParticle = firstParticle->getSon();
@@ -49,19 +48,16 @@ void LocalizationManager::updateParticles(Robot* robot, double deltaX, double de
 		if(currBelief < Utils::MIN_BELIEF_THRESHOLD)
 		{
 			particleVec.erase(particleVec.begin() + i);
-			cout << "SIZE: " << particleVec.size() << endl;
 			particlesCount--;
 		}
-
 	}
 
 	for (unsigned int i = 0; i < this->particleVec.size(); i++){
-		// If the belief of the particle is good and we're missing
-		// some particles - create new one
+		// create new one
 		if ((particleVec[i]->belief > Utils::GOOD_BELIEF_THRESHOLD) &&
 				(particlesCount < Utils::PARTICLES_NUMBER))
 		{
-			Particle *son = particleVec[i]->getSon();
+			Particle* son = particleVec[i]->getSon();
 			particleVec.push_back(son);
 			particlesCount++;
 		}
@@ -73,11 +69,8 @@ Particle* LocalizationManager::getBestParticle()
 {
 	int bestParticle = 0;
 
-	// Run over the particles vector
 	for(unsigned int i = 0; i < particleVec.size(); i++)
 	{
-		//cout << i <<" : " << particleVec[i]->belief << endl;
-		// If the current particle got higher belief then the best particle
 		if (particleVec[bestParticle]->belief < particleVec[i]->belief)
 		{
 			bestParticle = i;

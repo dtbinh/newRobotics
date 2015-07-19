@@ -30,7 +30,7 @@ double Particle::getBeliefAndUpdate(int deltaX, int deltaY, int deltaYaw,
 
 	double probByMovement = this->probByMove(deltaX, deltaY, deltaYaw);
 	double probByMeasure = this->probByMeasure(robot);
-	double newBelief = belief * 1.25 * probByMeasure * probByMovement;
+	double newBelief = belief * 1.15 * probByMeasure * probByMovement;
 
 	cout << " x: " << loc->x << " y: " << loc->y << "before: " << belief << " after: " << newBelief <<
 			" measure: "<< probByMeasure << " movement: " << probByMovement << endl;
@@ -52,21 +52,20 @@ Particle* Particle::getSon() {
 	newLoc->y += pow(-1, rand());
 	newLoc->yaw += (rand() % 30 - 15);
 
-	return new Particle(newLoc, this->belief);
+	return new Particle(newLoc, this->belief-0.01);
 }
 
 double Particle::probByMove(int deltaX, int deltaY, int deltaYaw) {
-	cout << "deltaX: " << deltaX << " deltaY: " << deltaY << " deltaYaw: " << deltaYaw << endl;
-	double prob = 0.25;
+	double prob;
 	double deltaDistance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
 
 	double realDeltaYaw = 0;
-
+	int absDeltaYaw = fabs(deltaYaw);
 	// Fix the angle reading
-	if (fabs(deltaYaw) > 180) {
-		realDeltaYaw = 360 - fabs(deltaYaw);
+	if (absDeltaYaw > 180) {
+		realDeltaYaw = 360 - absDeltaYaw;
 	} else {
-		realDeltaYaw = fabs(deltaYaw);
+		realDeltaYaw = absDeltaYaw;
 	}
 
 	// Check the probability of the robot real location
@@ -83,40 +82,29 @@ double Particle::probByMove(int deltaX, int deltaY, int deltaYaw) {
 		prob = Utils::MEDIUM_PROB;
 	}
 
-
-//	if (deltaDistance < 0.1)
-//		prob = 1;
-//	else if (deltaDistance < 0.3)
-//		prob = 0.8;
-//	else if (deltaDistance < 0.5)
-//			prob = 0.6;
-//	else if (deltaDistance < 0.7)
-//			prob = 0.4;
-//	else if (deltaDistance >= 0.7)
-//			prob = 0.2;
-
 	return prob;
 }
 
 double Particle::probByMeasure(Robot* robot) {
 	double numOfWrongMapCells = 0;
 	double numOfRightMapCells = 0;
+
 	double currentYaw = Utils::convertDegreeToRadian(loc->yaw);
 	Matrix<Utils::CELL_STATUS>* map = Map::getInstance()->getOriginalMap();
 
-	for (int i = 0; i <= Utils::MAX_LASER_INDEX; i += 10) {
+	for (int i = 0; i <= Utils::MAX_LASER_INDEX; i += 20) {
 		double laserAngle = laserIndexToLaserAngle(i);
 		double disFromObstacle = robot->getLaserScan(i);
 		double measuredDistance = Utils::convertMeterToPixel(disFromObstacle);
 
-		// if the distance is too large, assume that there is no obstacle in this index
-		// and if the distance is too short don't consider it as an obstacle because its the robot itself
 		bool isObstacleHit = false;
 
+		// check the distance
 		if (disFromObstacle < 4.0 && disFromObstacle > 0.2) {
 			double cosinus = cos(currentYaw + laserAngle);
 			double sinus = sin(currentYaw + laserAngle);
 
+			// check if the obstacle is in the right place
 			for (int j=0; j<measuredDistance; j++){
 
 				int xToCheck= loc->x +  (j * cosinus);
@@ -129,8 +117,10 @@ double Particle::probByMeasure(Robot* robot) {
 
 				if (map->get(yToCheck, xToCheck) == Utils::OCCUPIED) {
 					double realDistanceFromObstacle = sqrt(pow(yToCheck - loc->y,2) + pow(xToCheck - loc->x,2));
+					double disAbs = fabs(
+							realDistanceFromObstacle - measuredDistance);
 
-					if (fabs(realDistanceFromObstacle - measuredDistance) < 0.01)
+					if (disAbs < 1)
 					{
 						isObstacleHit = true;
 					}
@@ -138,18 +128,16 @@ double Particle::probByMeasure(Robot* robot) {
 				}
 			}
 
-			if (isObstacleHit) {
+			if (!isObstacleHit) {
 				numOfWrongMapCells++;
 			}
 			else {
 				numOfRightMapCells++;
 			}
-
 		}
 	}
 
 	if (numOfRightMapCells + numOfWrongMapCells == 0){
-		cout<< "000000000000000000"<<endl;
 		return 1;
 	}
 

@@ -23,7 +23,7 @@ public:
 	static double convertMeterToPixel(double inMeter);
 
 	// Particles
-	static const int PARTICLES_NUMBER = 150;
+	static const int PARTICLES_NUMBER = 100;
 	static const double MIN_BELIEF_THRESHOLD = 0.2;
 	static const double GOOD_BELIEF_THRESHOLD = 0.7;
 

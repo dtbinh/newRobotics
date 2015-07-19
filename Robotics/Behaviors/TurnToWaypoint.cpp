@@ -16,26 +16,18 @@ bool TurnToWaypoint::startCond()
 		return false;
 	}
 
-	if (_waypointMgr->isClearPath(currWayPoint->getX(), currWayPoint->getY(),
-							  _robot->getXPos(), _robot->getYPos())){
-
-		if (currWayPoint->getX() - _robot->getXPos() == 0){
-			_nextWaypointYaw = _robot->getYPos() - currWayPoint->getY() ? 180 : 0;
-		}
-		else{
-			double tan = atan((currWayPoint->getY() - _robot->getYPos()) / (currWayPoint->getX() - _robot->getXPos()));
-			_nextWaypointYaw = 180 -
-				Utils::convertRadianToDegree(tan);
-		}
-
-		_isRightTurn = _robot->getYaw() - _nextWaypointYaw > 0 ? -1 : 1;
-
-		std::cout<<"robotYaw: "<< _robot->getYaw() <<"nextYaw: "<< _nextWaypointYaw<<std::endl;
-
-		return true;
+	if (currWayPoint->getX() - _robot->getXPos() == 0){
+		_nextWaypointYaw = _robot->getYPos() - currWayPoint->getY() ? 180 : 0;
+	}
+	else{
+		double arctan = atan((currWayPoint->getY() - _robot->getYPos()) / (currWayPoint->getX() - _robot->getXPos()));
+		_nextWaypointYaw = 180 -
+			Utils::convertRadianToDegree(arctan);
 	}
 
-	return false;
+	_isRightTurn = _robot->getYaw() - _nextWaypointYaw > 0 ? -1 : 1;
+
+	return true;
 }
 
 void TurnToWaypoint::action()
@@ -51,10 +43,7 @@ double TurnToWaypoint::getPriority()
 bool TurnToWaypoint::stopCond()
 {
 	// stop if we reached way point yaw
-	if (fabs(_nextWaypointYaw - _robot->getYaw()) < 2){
-		return true;
-	}
-	return false;
+	return fabs(_nextWaypointYaw - _robot->getYaw()) < 2;
 }
 
 TurnToWaypoint::~TurnToWaypoint()

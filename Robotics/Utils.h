@@ -23,12 +23,12 @@ public:
 	static double convertMeterToPixel(double inMeter);
 
 	// Particles
-	static const int PARTICLES_NUMBER = 100;
-	static const double MIN_BELIEF_THRESHOLD = 0.3;
+	static const int PARTICLES_NUMBER = 150;
+	static const double MIN_BELIEF_THRESHOLD = 0.2;
 	static const double GOOD_BELIEF_THRESHOLD = 0.7;
 
 	// Probability
-	static const double PERFECT_PROB = 1;
+	static const double PERFECT_PROB = 0.99;
 	static const double HIGH_PROB = 0.9;
 	static const double MEDIUM_PROB = 0.6;
 	static const double LOW_PROB = 0.4;

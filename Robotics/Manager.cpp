@@ -45,10 +45,16 @@ void Manager::run() {
 			//newX = newX + ((double) rand() / (RAND_MAX)) * 2 * NOISE_POSITION_FACTOR - NOISE_POSITION_FACTOR;
 			//newY = newY + ((double) rand() / (RAND_MAX)) * 2 * NOISE_POSITION_FACTOR - NOISE_POSITION_FACTOR;
 			//newYaw = newYaw + ((double) rand() / (RAND_MAX)) * 2 * NOISE_YAW_FACTOR - NOISE_YAW_FACTOR;
+			double deltaX = newX - prevX;
+			double deltaY = newY - prevY;
+			double deltaYaw = newYaw - prevYaw;
+			if (deltaX == 0 &&  deltaY == 0 && deltaYaw == 0)
+				continue;
 
 			// Update particles
-			_localizationManager.updateParticles(_robot, newX - prevX,
-					newY - prevY, newYaw - prevYaw);
+				_localizationManager.updateParticles(_robot, deltaX,
+					deltaY,
+						deltaYaw);
 
 			cout << "Robot's position: " << newX << ", " << newY << ", "
 					<< newYaw << endl;

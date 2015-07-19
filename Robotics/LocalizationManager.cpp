@@ -52,9 +52,13 @@ void LocalizationManager::updateParticles(Robot* robot, double deltaX, double de
 			cout << "SIZE: " << particleVec.size() << endl;
 			particlesCount--;
 		}
+
+	}
+
+	for (unsigned int i = 0; i < this->particleVec.size(); i++){
 		// If the belief of the particle is good and we're missing
 		// some particles - create new one
-		else if ((currBelief > Utils::GOOD_BELIEF_THRESHOLD) &&
+		if ((particleVec[i]->belief > Utils::GOOD_BELIEF_THRESHOLD) &&
 				(particlesCount < Utils::PARTICLES_NUMBER))
 		{
 			Particle *son = particleVec[i]->getSon();

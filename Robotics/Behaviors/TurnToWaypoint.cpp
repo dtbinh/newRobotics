@@ -51,7 +51,10 @@ double TurnToWaypoint::getPriority()
 bool TurnToWaypoint::stopCond()
 {
 	// stop if we reached way point yaw
-	return fabs(_nextWaypointYaw - _robot->getYaw()) < 2;
+	if (fabs(_nextWaypointYaw - _robot->getYaw()) < 2){
+		return true;
+	}
+	return false;
 }
 
 TurnToWaypoint::~TurnToWaypoint()

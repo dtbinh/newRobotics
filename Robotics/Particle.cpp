@@ -87,28 +87,39 @@ double Particle::probByMeasure(Robot* robot) {
 	for (int i = 0; i < Utils::MAX_LASER_INDEX; i += 10) {
 		double laserAngle = laserIndexToLaserAngle(i);
 		double disFromObstacle = robot->getLaserScan(i);
-
-		double obstacleXPos = loc->x
-				+ Utils::convertMeterToPixel(
-						(disFromObstacle * cos(currentYaw + laserAngle)));
-		double obstacleYPos = loc->y
-				- Utils::convertMeterToPixel(
-						(disFromObstacle * sin(currentYaw + laserAngle)));
+		double measuredDistance = Utils::convertMeterToPixel(disFromObstacle);
 
 		// if the distance is too large, assume that there is no obstacle in this index
 		// and if the distance is too short don't consider it as an obstacle because its the robot itself
-		if (disFromObstacle < 2.0 && disFromObstacle > 0.2) {
-			if (obstacleYPos < 0 || obstacleXPos < 0
-					|| obstacleYPos > map->getRows()
-					|| obstacleXPos > map->getColumns()) {
-				continue;
+		bool isObstacleHit = false;
+
+		if (disFromObstacle < 4.0 && disFromObstacle > 0.2) {
+			double cosinus = cos(currentYaw + laserAngle);
+			double sinus = sin(currentYaw + laserAngle);
+
+			for (int j=0; j<160; j++){
+
+				int xToCheck= loc->x +  (j * cosinus);
+				int yToCheck = loc->y - (j * sinus);
+
+				if (xToCheck > map->getRows() || yToCheck > map->getColumns()) {
+					isObstacleHit = true;
+					break;
+				}
+
+				if (map->get(yToCheck, xToCheck) == Utils::OCCUPIED) {
+					double realDistanceFromObstacle = sqrt(pow(yToCheck - loc->y,2) + pow(xToCheck - loc->x,2));
+
+					cout<< "real: " << realDistanceFromObstacle << " measured: " << measuredDistance << endl;
+					if (fabs(realDistanceFromObstacle - measuredDistance) < 2)
+					{
+						isObstacleHit = true;
+					}
+					break;
+				}
 			}
 
-			// Get the value in the map's cell that represents the obstacle location
-			int obstacleCurrCellValue =
-					map->get(obstacleYPos, obstacleXPos) == Utils::OCCUPIED ? 1 : 0;
-
-			if (obstacleCurrCellValue == 0) {
+			if (isObstacleHit) {
 				numOfWrongMapCells++;
 			}
 			else {
@@ -117,6 +128,12 @@ double Particle::probByMeasure(Robot* robot) {
 
 		}
 	}
+
+	if (numOfRightMapCells + numOfWrongMapCells == 0){
+		cout<< "000000000000000000"<<endl;
+		return 1;
+	}
+
 	return (numOfRightMapCells / (numOfRightMapCells + numOfWrongMapCells));
 }
 

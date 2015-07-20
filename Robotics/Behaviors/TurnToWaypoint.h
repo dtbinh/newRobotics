@@ -13,7 +13,7 @@
 
 class TurnToWaypoint: public Behavior {
 	double _nextWaypointYaw;
-	int _isRightTurn;
+	int _isLeftTurn;
 public:
 	WaypointsManager* _waypointMgr;
 	TurnToWaypoint(Robot* robot, WaypointsManager* wpManager) :

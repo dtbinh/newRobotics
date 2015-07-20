@@ -20,6 +20,8 @@ class WaypointsManager {
 private:
 	std::vector <Position*> _waypointVector;
 	int _wpIndex = 0;
+	void fillWayPointsVectorByPath(std::vector <Position*> path);
+	void optimizePath();
 public:
 	Position* currWP;
 
@@ -31,7 +33,6 @@ public:
 	bool isLastWayPoint();
 	bool isInWayPoint(double x,double y);
 	bool isClearPath(int x1, int y1, int x2, int y2);
-	void optimizePath();
 	virtual ~WaypointsManager();
 };
 

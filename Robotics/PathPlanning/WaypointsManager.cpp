@@ -14,26 +14,7 @@ WaypointsManager::WaypointsManager()
 
 WaypointsManager::WaypointsManager(std::vector <Position*> path)
 {
-	// Check the direction of the first point
-	int diffX = (path[1]->getX() - path[0]->getX());
-	int diffY = (path[1]->getY() - path[0]->getY());
-
-	for(int i = 2; i < path.size(); i++)
-	{
-		// Check the direction of the next point
-		int nextDiffX = (path[i]->getX() - path[i-1]->getX());
-		int nextDiffY = (path[i]->getY() - path[i-1]->getY());
-
-		// If the direction changed
-		if (diffX != nextDiffX || diffY != nextDiffY)
-		{
-			// Insert the point to the waypoints list
-			_waypointVector.push_back(path[i-1]);
-
-			diffX = nextDiffX;
-		    diffY = nextDiffY;
-		}
-	}
+	fillWayPointsVectorByPath(path);
 
 	std::reverse(_waypointVector.begin(), _waypointVector.end());
 	_waypointVector.push_back(new Position(Utils::configurationManager->xTarget,
@@ -41,9 +22,30 @@ WaypointsManager::WaypointsManager(std::vector <Position*> path)
 
 	currWP = _waypointVector[0];
 
-	this->optimizePath();
-	for (int i=0 ;i<_waypointVector.size(); i++){
+	//this->optimizePath();
+
+	for (unsigned int i=0 ;i<_waypointVector.size(); i++){
 		cout<<_waypointVector[i]->getX()<< " " <<_waypointVector[i]->getY()<<endl;
+	}
+}
+
+void WaypointsManager::fillWayPointsVectorByPath(std::vector <Position*> path)
+{
+	int deltaX = (path[1]->getX() - path[0]->getX());
+	int deltaY = (path[1]->getY() - path[0]->getY());
+
+	for(unsigned int i = 2; i < path.size(); i++)
+	{
+		int nextDeltaX = (path[i]->getX() - path[i-1]->getX());
+		int nexteltaY = (path[i]->getY() - path[i-1]->getY());
+
+		if (deltaX != nextDeltaX || deltaY != nexteltaY)
+		{
+			_waypointVector.push_back(path[i-1]);
+
+			deltaX = nextDeltaX;
+			deltaY = nexteltaY;
+		}
 	}
 }
 
@@ -66,10 +68,11 @@ void WaypointsManager::optimizePath()
 				hasChanged = true;
 			}
 		}
-		if(i==_waypointVector.size()-2){ //push the one before last vertex
+		//push the one before last vertex and the last
+		if(i==_waypointVector.size()-2){
 			optimizedPath.push_back(_waypointVector[_waypointVector.size()-2]);
 		}
-		optimizedPath.push_back(_waypointVector[_waypointVector.size()-1]); // push the last vertex
+		optimizedPath.push_back(_waypointVector[_waypointVector.size()-1]);
 		_waypointVector = optimizedPath;
 	}
 }
@@ -87,16 +90,16 @@ Position* WaypointsManager::getCurrWayPoint() {
 }
 
 Position* WaypointsManager::getNextWayPoint() {
-	Position* nextWP = NULL;
+	Position* nextWaypoint = NULL;
 
 	if (_wpIndex < _waypointVector.size())
 	{
 		_wpIndex++;
-		nextWP = _waypointVector[_wpIndex];
-		currWP = nextWP;
+		nextWaypoint = _waypointVector[_wpIndex];
+		currWP = nextWaypoint;
 	}
 
-	return nextWP;
+	return nextWaypoint;
 }
 
 bool WaypointsManager::isInWayPoint(double x,double y)
@@ -128,8 +131,8 @@ bool WaypointsManager::isClearPath(int x1, int y1, int x2, int y2)
 		return false;
 	}
 
-	int bigX,smallX;
-	// find the bigger X's
+	int bigX,smallX,bigY,smallY;
+
 	if(x1 > x2)
 	{
 		bigX 	= x1;
@@ -140,8 +143,7 @@ bool WaypointsManager::isClearPath(int x1, int y1, int x2, int y2)
 		bigX 	= x2;
 		smallX 	= x1;
 	}
-	int bigY,smallY;
-	// find the bigger Y's
+
 	if(y1 > y2)
 	{
 		bigY 	= y1;
@@ -155,7 +157,7 @@ bool WaypointsManager::isClearPath(int x1, int y1, int x2, int y2)
 
 	Matrix<Utils::CELL_STATUS>* map = Map::getInstance()->getBlownMap();
 
-	// Set a linear equation
+	// Linear equation
 	float a = (float)(y2 - y1) / (x2 - x1);
 	for(double i = smallX; (i < bigX && isClear); i+=0.2)
 	{

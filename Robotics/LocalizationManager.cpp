@@ -17,14 +17,14 @@ LocalizationManager::LocalizationManager()
 	Location* firstParticleLoc = new Location(xStartLocation,yStartLocation, yawStartLocation);
 
 	Particle* firstParticle = new Particle(firstParticleLoc, 1);
-	particleVec.push_back(firstParticle);
+	particles.push_back(firstParticle);
 	particlesCount = 1;
 
 	// Create all particles
 	for(int i = 1; i < Utils::PARTICLES_NUMBER; i++)
 	{
-		Particle* currentParticle = firstParticle->getSon();
-		particleVec.push_back(currentParticle);
+		Particle* currentParticle = firstParticle->createParticle();
+		particles.push_back(currentParticle);
 		firstParticle = currentParticle;
 		particlesCount++;
 	}
@@ -39,26 +39,26 @@ void LocalizationManager::updateParticles(Robot* robot, double deltaX, double de
 {
 	int currBelief;
 
-	for(unsigned int i = 0; i < this->particleVec.size(); i++)
+	for(unsigned int i = 0; i < this->particles.size(); i++)
 	{
 		currBelief =
-			this->particleVec[i]->getBeliefAndUpdate(deltaX, deltaY, deltaYaw, robot);
+			this->particles[i]->update(deltaX, deltaY, deltaYaw, robot);
 
 		//If the belief of the particle is too low - delete the current particle
 		if(currBelief < Utils::MIN_BELIEF_THRESHOLD)
 		{
-			particleVec.erase(particleVec.begin() + i);
+			particles.erase(particles.begin() + i);
 			particlesCount--;
 		}
 	}
 
-	for (unsigned int i = 0; i < this->particleVec.size(); i++){
+	for (unsigned int i = 0; i < this->particles.size(); i++){
 		// create new one
-		if ((particleVec[i]->belief > Utils::GOOD_BELIEF_THRESHOLD) &&
+		if ((particles[i]->belief > Utils::GOOD_BELIEF_THRESHOLD) &&
 				(particlesCount < Utils::PARTICLES_NUMBER))
 		{
-			Particle* son = particleVec[i]->getSon();
-			particleVec.push_back(son);
+			Particle* son = particles[i]->createParticle();
+			particles.push_back(son);
 			particlesCount++;
 		}
 	}
@@ -69,13 +69,13 @@ Particle* LocalizationManager::getBestParticle()
 {
 	int bestParticle = 0;
 
-	for(unsigned int i = 0; i < particleVec.size(); i++)
+	for(unsigned int i = 0; i < particles.size(); i++)
 	{
-		if (particleVec[bestParticle]->belief < particleVec[i]->belief)
+		if (particles[bestParticle]->belief < particles[i]->belief)
 		{
 			bestParticle = i;
 		}
 	}
 
-	return particleVec[bestParticle];
+	return particles[bestParticle];
 }

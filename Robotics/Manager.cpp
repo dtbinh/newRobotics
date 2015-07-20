@@ -40,11 +40,6 @@ void Manager::run() {
 			newY = _robot->getYPos();
 			newYaw = _robot->getYaw();
 
-			// Use some noise to simulate real world wrong reads.
-			// TODO: get rid of it in production----------------------------------------------------------
-			//newX = newX + ((double) rand() / (RAND_MAX)) * 2 * NOISE_POSITION_FACTOR - NOISE_POSITION_FACTOR;
-			//newY = newY + ((double) rand() / (RAND_MAX)) * 2 * NOISE_POSITION_FACTOR - NOISE_POSITION_FACTOR;
-			//newYaw = newYaw + ((double) rand() / (RAND_MAX)) * 2 * NOISE_YAW_FACTOR - NOISE_YAW_FACTOR;
 			double deltaX = newX - prevX;
 			double deltaY = newY - prevY;
 			double deltaYaw = newYaw - prevYaw;
@@ -52,14 +47,15 @@ void Manager::run() {
 				continue;
 
 			// Update particles
-				_localizationManager.updateParticles(_robot, deltaX, deltaY, deltaYaw);
-
-			cout << "Robot's position: " << newX << ", " << newY << ", "
-					<< newYaw << endl;
-
+			_localizationManager.updateParticles(_robot, deltaX, deltaY, deltaYaw);
 			Particle* best = _localizationManager.getBestParticle();
-			cout << "Robot's position by particles: " << best->loc->x << ", "
-					<< best->loc->y << ", " << best->loc->yaw << ", " << best->belief << endl;
+
+			//cout << "Robot's position: " << newX << ", " << newY << ", "
+			//		<< newYaw << endl;
+
+
+			//cout << "Robot's position by particles: " << best->loc->x << ", "
+			//		<< best->loc->y << ", " << best->loc->yaw << ", " << best->belief << endl;
 
 			prevX = newX;
 			prevY = newY;

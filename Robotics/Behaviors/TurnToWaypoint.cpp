@@ -12,7 +12,10 @@ bool TurnToWaypoint::startCond()
 	// Turn to waypoint if we have eye contact to it
 	Position* currWayPoint = _waypointMgr->getCurrWayPoint();
 
-	if (currWayPoint == NULL){
+	// Check if it's the last waypoint or we cant reach it
+	if (currWayPoint == NULL ||
+			!_waypointMgr->isClearPath(_robot->getXPos(), _robot->getYPos(),
+									  currWayPoint->getX(), currWayPoint->getY())){
 		return false;
 	}
 
@@ -25,14 +28,14 @@ bool TurnToWaypoint::startCond()
 			Utils::convertRadianToDegree(arctan);
 	}
 
-	_isRightTurn = _robot->getYaw() - _nextWaypointYaw > 0 ? -1 : 1;
+	_isLeftTurn = _robot->getYaw() - _nextWaypointYaw < 0 ? 1 : -1;
 
 	return true;
 }
 
 void TurnToWaypoint::action()
 {
-	_robot->setSpeed(0.0,_isRightTurn * 0.3);
+	_robot->setSpeed(0.0,_isLeftTurn * 0.3);
 }
 
 double TurnToWaypoint::getPriority()

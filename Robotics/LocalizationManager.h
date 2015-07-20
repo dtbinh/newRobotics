@@ -19,7 +19,7 @@ public:
 	LocalizationManager();
 	virtual ~LocalizationManager();
 
-	std::vector<Particle*> particleVec;
+	std::vector<Particle*> particles;
 	int particlesCount;
 
 	void updateParticles(Robot* robot, double deltaX, double deltaY, double deltaYaw);

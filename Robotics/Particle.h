@@ -18,21 +18,19 @@
 #include "Map.h"
 
 class Particle {
+	double probByMove(int deltaX, int deltaY, int deltaYaw);
+	double probByMeasure(Robot* robot);
 public:
-	Location* loc;
+	Location* location;
 	double belief;
 
 	Particle();
 	Particle(Location* location, double bel);
 	virtual ~Particle();
 
-	double getBeliefAndUpdate(int deltaX, int deltaY, int deltaYaw, Robot* robot);
-	Particle* getSon();
-	double probByMove(int deltaX, int deltaY, int deltaYaw);
-	double probByMeasure(Robot* robot);
-	double getAngleByIndex(int index);
-	double getRadianByIndex(int index);
-	double laserIndexToLaserAngle(int index);
+	double update(int deltaX, int deltaY, int deltaYaw, Robot* robot);
+	Particle* createParticle();
+	double convertLaserIndexToLaserAngle(int index);
 };
 
 #endif /* PARTICLE_H_ */

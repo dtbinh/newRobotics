@@ -20,10 +20,9 @@ public:
 	virtual ~LocalizationManager();
 
 	std::vector<Particle*> particles;
-	int particlesCount;
-
 	void updateParticles(Robot* robot, double deltaX, double deltaY, double deltaYaw);
 	Particle* getBestParticle();
+	void createParticles();
 };
 
 #endif /* LOCALIZATIONMANAGER_H_ */

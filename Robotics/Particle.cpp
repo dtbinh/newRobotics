@@ -30,7 +30,7 @@ double Particle::update(int deltaX, int deltaY, int deltaYaw,
 
 	double probByMovement = this->probByMove(deltaX, deltaY, deltaYaw);
 	double probByMeasure = this->probByMeasure(robot);
-	double newBelief = belief * 1.15 * probByMeasure * probByMovement;
+	double newBelief = belief * 2.5 * probByMeasure * probByMovement;
 
 	//cout << " x: " << loc->x << " y: " << loc->y << "before: " << belief << " after: " << newBelief <<
 		//	" measure: "<< probByMeasure << " movement: " << probByMovement << endl;

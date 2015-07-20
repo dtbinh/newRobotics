@@ -48,7 +48,6 @@ ConfigurationManager::ConfigurationManager(const char* configurationFilePath) {
 	string GridResolutionCM = file_data[5];
 	this->gridResolution = atof(GridResolutionCM.c_str());
 
-
 	this->robotLength = this->robotLength / this->mapResolution;
 	this->robotWidth = this->robotWidth / this->mapResolution;
 }

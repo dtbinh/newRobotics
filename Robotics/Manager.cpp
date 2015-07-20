@@ -49,13 +49,14 @@ void Manager::run() {
 			// Update particles
 			_localizationManager.updateParticles(_robot, deltaX, deltaY, deltaYaw);
 			Particle* best = _localizationManager.getBestParticle();
+			_localizationManager.createParticles();
 
-			//cout << "Robot's position: " << newX << ", " << newY << ", "
-			//		<< newYaw << endl;
+			cout << "Robot's position: " << newX << ", " << newY << ", "
+					<< newYaw << endl;
 
 
-			//cout << "Robot's position by particles: " << best->loc->x << ", "
-			//		<< best->loc->y << ", " << best->loc->yaw << ", " << best->belief << endl;
+			cout << "Robot's position by particles: " << best->location->x << ", "
+					<< best->location->y << ", " << best->location->yaw << ", " << best->belief << endl;
 
 			prevX = newX;
 			prevY = newY;

@@ -17,7 +17,7 @@ PathPlanner::PathPlanner() {
 
 	// Get way points
 	WaypointsManager* waypointMgr = new WaypointsManager(_astarPath);
-	_waypoints = waypointMgr->getWayPoints();
+	_waypointsMgr = waypointMgr;
 }
 
 void PathPlanner::printAstarToPng(){
@@ -26,6 +26,10 @@ void PathPlanner::printAstarToPng(){
 	for(unsigned int i=0; i < _astarPath.size(); i++){
 		mapToPrintAstarOn->set(_astarPath[i]->getY(), _astarPath[i]->getX(), Utils::OCCUPIED);
 	}
+
+//	for(unsigned int i=0; i < _waypointsMgr->getWayPoints().size(); i++){
+//		mapToPrintAstarOn->set(_waypointsMgr->getWayPoints()[i]->getY(), _waypointsMgr->getWayPoints()[i]->getX(), Utils::OCCUPIED);
+//	}
 
 	char* imgPath = "/home/colman/Desktop/astar.png";
 	_map->saveMapToPng(mapToPrintAstarOn, imgPath);

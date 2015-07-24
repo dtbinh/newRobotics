@@ -16,23 +16,16 @@ int main(){
 
 	Robot robot("localhost", 6665);
 	PathPlanner* pathPlanner = new PathPlanner();
-
-	Manager manager(&robot, pathPlanner);
+	AvoidObstaclesPlan* avoidObstaclesPlan = new AvoidObstaclesPlan(&robot, pathPlanner->getWaypointsMgr());
+	vector<Position*> points = pathPlanner->getWaypointsMgr()->getWayPoints();
+	Manager manager(&robot, pathPlanner, avoidObstaclesPlan);
 	manager.run();
-	/*
-	//Robot robot("localhost", 6665,1);
-	//const char* CONFIGURATION_PATH = "parameters.txt";
-	//Utils::configurationManager = new ConfigurationManager(CONFIGURATION_PATH);
-	PathPlanner pathPlanner;
-
-	//Manager manager(&robot, &pathPlanner);
-	//manager.run();
 
 	//Bonus
-	pathPlanner.printAstarToPng();
+	pathPlanner->printAstarToPng();
 
 	cout << "finished running";
-*/
+
 	return 0;
 }
 

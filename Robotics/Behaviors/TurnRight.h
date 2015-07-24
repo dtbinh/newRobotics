@@ -1,11 +1,12 @@
-#include "Behavior.h"
+#include "BehaviorBase.h"
 
 class TurnRight: public Behavior {
 public:
-	TurnRight(Robot* robot) : Behavior(robot) {}
+	WaypointsManager* _waypointMgr;
+	TurnRight(Robot* robot, WaypointsManager* wpManager) : Behavior(robot), _waypointMgr(wpManager) {}
 	virtual ~TurnRight();
 	void action();
 	bool startCond();
 	bool stopCond();
-	//double availableSpace();
+	double getPriority();
 };

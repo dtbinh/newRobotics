@@ -2,6 +2,10 @@
 
 bool TurnLeft::startCond()
 {
+	if (_waypointMgr->getCurrWayPoint() == NULL){
+		return false;
+	}
+
 	// Turn left only if none of the left side laser indexes found obstacle
 	for(int i=CENTER_LASER_INDEX; i<Utils::MAX_LASER_INDEX; i++)
 	{
@@ -16,7 +20,7 @@ void TurnLeft::action()
 	_robot->setSpeed(0.0, ROTATION_SPEED);
 }
 
-/*double TurnLeft::availableSpace()
+double TurnLeft::getPriority()
 {
 	double totalDistance = 0;
 	for(int i=CENTER_LASER_INDEX; i<Utils::MAX_LASER_INDEX; i++)
@@ -25,7 +29,7 @@ void TurnLeft::action()
 	}
 
 	return totalDistance;
-}*/
+}
 
 bool TurnLeft::stopCond()
 {

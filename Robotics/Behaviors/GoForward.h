@@ -1,11 +1,12 @@
-#include "Behavior.h"
+#include "BehaviorBase.h"
 
 class GoForward : public Behavior {
 public:
-	GoForward(Robot* robot) : Behavior(robot) {}
+	WaypointsManager* _waypointMgr;
+	GoForward(Robot* robot, WaypointsManager* wpManager) : Behavior(robot), _waypointMgr(wpManager) {}
 	virtual ~GoForward();
 	void action();
 	bool startCond();
 	bool stopCond();
-	//double availableSpace();
+	double getPriority();
 };

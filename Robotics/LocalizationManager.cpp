@@ -9,23 +9,21 @@
 
 LocalizationManager::LocalizationManager()
 {
+	int xStartLocation = Utils::configurationManager->xStartLocation;
+	int yStartLocation = Utils::configurationManager->yStartLocation;
+	int yawStartLocation = Utils::configurationManager->yawStartLocation;
+
 	// Create the first particle
-	Location* firstParticleLoc = new Location(Utils::configurationManager->xStartLocation,
-			Utils::configurationManager->yStartLocation,
-			Utils::configurationManager->yawStartLocation);
+	Location* firstParticleLoc = new Location(xStartLocation,yStartLocation, yawStartLocation);
 
 	Particle* firstParticle = new Particle(firstParticleLoc, 1);
-	particleVec.push_back(firstParticle);
-	particlesCount = 1;
+	particles.push_back(firstParticle);
 
-	// Create all other particles. Each time we create the particle
-	// as the son of the last one we created.
+	// Create all particles
 	for(int i = 1; i < Utils::PARTICLES_NUMBER; i++)
 	{
-		Particle* currentParticle = firstParticle->getSon();
-		particleVec.push_back(currentParticle);
-		firstParticle = currentParticle;
-		particlesCount++;
+		Particle* currentParticle = firstParticle->createParticle();
+		particles.push_back(currentParticle);
 	}
 }
 
@@ -34,48 +32,71 @@ LocalizationManager::~LocalizationManager()
 	// TODO Auto-generated destructor stub
 }
 
-void LocalizationManager::UpdateParticles(Robot* robot, double deltaX, double deltaY, double deltaYaw)
+void LocalizationManager::updateParticles(Robot* robot, double deltaX, double deltaY, double deltaYaw)
 {
-	int currBelief;
+	double currBelief;
+	std::vector<Particle*> newParticles;
+	int maxIndex = 0;
+	double maxBelief = 0;
 
-	for(unsigned int i = 0; i < this->particleVec.size(); i++)
+	for(unsigned int i = 0; i < this->particles.size(); i++)
 	{
 		currBelief =
-			this->particleVec[i]->getBeliefAndUpdate(deltaX, deltaY, deltaYaw, robot);
+			this->particles[i]->update(deltaX, deltaY, deltaYaw, robot);
 
-		//If the belief of the particle is too low - delete the current particle
-		if(currBelief < Utils::MIN_BELIEF_THRESHOLD)
-		{
-			particleVec.erase(particleVec.begin() + i);
-
-			particlesCount--;
+		if (currBelief > maxBelief){
+			maxBelief = currBelief;
+			maxIndex = i;
 		}
-		// If the belief of the particle is good and we're missing
-		// some particles - create new one
-		else if ((currBelief > Utils::GOOD_BELIEF_THRESHOLD) &&
-				(particlesCount < Utils::PARTICLES_NUMBER))
+
+		if(currBelief >= Utils::MIN_BELIEF_THRESHOLD)
 		{
-			Particle *son = particleVec[i]->getSon();
-			particleVec.push_back(son);
-			particlesCount++;
+			newParticles.push_back(this->particles[i]);
+		}
+	}
+
+	// don't get 0 particles
+	if (newParticles.size() == 0){
+		if (this->particles[maxIndex]->belief < 0.2){
+			this->particles[maxIndex]->belief = 0.8;
+		}
+		newParticles.push_back(this->particles[maxIndex]);
+		for(int i = 2; i < 30; i++)
+		{
+			Particle* currentParticle = this->particles[maxIndex]->createParticle();
+			newParticles.push_back(currentParticle);
+		}
+	}
+
+	cout << "before: " << this->particles.size()  << "  after: " << newParticles.size() << endl;
+	particles = newParticles;
+}
+
+void LocalizationManager::createParticles()
+{
+	for (unsigned int i = 0; i < this->particles.size(); i++){
+		// create new one
+		if ((particles[i]->belief > Utils::GOOD_BELIEF_THRESHOLD) &&
+				(this->particles.size() < Utils::PARTICLES_NUMBER))
+		{
+			Particle* son = particles[i]->createParticle();
+			particles.push_back(son);
 		}
 	}
 }
 
 
-Particle* LocalizationManager::GetBestParticle()
+Particle* LocalizationManager::getBestParticle()
 {
 	int bestParticle = 0;
 
-	// Run over the particles vector
-	for(unsigned int i = 0; i < particleVec.size(); i++)
+	for(unsigned int i = 0; i < particles.size(); i++)
 	{
-		// If the current particle got higher belief then the best particle
-		if (particleVec[bestParticle]->belief < particleVec[i]->belief)
+		if (particles[bestParticle]->belief < particles[i]->belief)
 		{
 			bestParticle = i;
 		}
 	}
 
-	return particleVec[bestParticle];
+	return particles[bestParticle];
 }

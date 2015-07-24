@@ -10,6 +10,7 @@
 
 #include "../Robot.h"
 #include "../Utils.h"
+#include "../PathPlanning/WaypointsManager.h"
 
 class Behavior {
 	Behavior** _nextBehaviors;
@@ -22,7 +23,7 @@ public:
 	virtual bool startCond() = 0;
 	virtual bool stopCond() = 0;
 	virtual void action() = 0;
-	virtual double availableSpace() = 0;
+	virtual double getPriority() = 0;
 	bool addNextBehavior(Behavior* behaviorToAdd);
 	Behavior* selectNextBehavior();
 };

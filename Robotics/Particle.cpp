@@ -8,13 +8,11 @@
 #include "Particle.h"
 #include "Utils.h"
 
-Particle::Particle()
-{
+Particle::Particle() {
 }
 
-Particle::Particle(Location* location, double bel)
-{
-	this->loc = new Location(*location);
+Particle::Particle(Location* location, double bel) {
+	this->location = new Location(*location);
 
 	this->belief = bel;
 }
@@ -23,121 +21,128 @@ Particle::~Particle() {
 	// TODO Auto-generated destructor stub
 }
 
-double Particle::getBeliefAndUpdate(int deltaX, int deltaY, int deltaYaw, Robot* robot)
-{
-	double predBel;
+double Particle::update(int deltaX, int deltaY, int deltaYaw,
+		Robot* robot) {
 
-	loc->x += deltaX;
-	loc->y += deltaY;
-	loc->yaw += deltaYaw;
+	location->x += deltaX;
+	location->y += deltaY;
+	location->yaw += deltaYaw;
 
-	predBel = belief * (this->probByMove(deltaX, deltaY, deltaYaw));
+	double probByMovement = this->probByMove(deltaX, deltaY, deltaYaw);
+	double probByMeasure = this->probByMeasure(robot);
+	double newBelief = belief * 2.5 * probByMeasure * probByMovement;
 
-	belief = Utils::PROB_NORMAL_CONST * predBel * (this->probByMeasure(robot));
+	//cout << " x: " << loc->x << " y: " << loc->y << "before: " << belief << " after: " << newBelief <<
+		//	" measure: "<< probByMeasure << " movement: " << probByMovement << endl;
+
+	belief = newBelief;
+
+	if (belief > 1){
+		belief = 1;
+	}
 
 	return belief;
 }
 
-Particle* Particle::getSon()
-{
-	Location *newLoc = loc;
+Particle* Particle::createParticle() {
+	Location* newLocation = location;
 
 	// Randomize the location of the new cell to be around the current cell
-	newLoc->x += (Utils::CELL_SIZE) * pow(-1, rand());
-	newLoc->y += (Utils::CELL_SIZE) * pow(-1, rand());
-	newLoc->yaw += (rand() % 30 - 15);
-	Particle* noy = new Particle(newLoc, 1);
-	return new Particle(newLoc, this->belief);
+	newLocation->x += pow(-1, rand());
+	newLocation->y += pow(-1, rand());
+	newLocation->yaw += (rand() % 30 - 15);
+
+	return new Particle(newLocation, this->belief-0.01);
 }
 
-double Particle::probByMove(int deltaX, int deltaY, int deltaYaw)
-{
-	double prob = 0;
+double Particle::probByMove(int deltaX, int deltaY, int deltaYaw) {
+	double prob;
 	double deltaDistance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
+
 	double realDeltaYaw = 0;
+	int absDeltaYaw = fabs(deltaYaw);
 
 	// Fix the angle reading
-	if (fabs(deltaYaw) > 180)
-	{
-		realDeltaYaw = 360 - fabs(deltaYaw);
-	}
-	else
-	{
-		realDeltaYaw = fabs(deltaYaw);
+	if (absDeltaYaw > 180) {
+		realDeltaYaw = 360 - absDeltaYaw;
+	} else {
+		realDeltaYaw = absDeltaYaw;
 	}
 
 	// Check the probability of the robot real location
-	if ((deltaDistance < Utils::DISTANCE_PROB_THRESHOLD) && (realDeltaYaw < 0.01))
-	{
+	if ((deltaDistance < 0.2) && (realDeltaYaw < 0.01)) {
 		prob = Utils::PERFECT_PROB;
-	}
-	else if ((deltaDistance > Utils::DISTANCE_PROB_THRESHOLD) && (realDeltaYaw > Utils::YAW_PROB_THRESHOLD))
-	{
-		prob = Utils::LOW_PROB;
-	}
-	else if ((deltaDistance < Utils::DISTANCE_PROB_THRESHOLD) && (realDeltaYaw < Utils::YAW_PROB_THRESHOLD))
-	{
+	} else if ((deltaDistance < 0.2) && (realDeltaYaw < 20)) {
 		prob = Utils::HIGH_PROB;
-	}
-	else
-	{
+	} else if ((deltaDistance > 0.2) && (realDeltaYaw > 20)) {
+		prob = Utils::LOW_PROB;
+	} else {
 		prob = Utils::MEDIUM_PROB;
 	}
 
 	return prob;
 }
 
-double Particle::probByMeasure(Robot* robot)
-{
-	double numOfWrongMapCells = 0;
-	double numOfRightMapCells = 0;
+double Particle::probByMeasure(Robot* robot) {
+	double missesCount = 0;
+	double hitsCount = 0;
 
-	for (int i=0; i< Utils::MAX_LASER_INDEX; i+=10)
-	{
-		double laserAngle = laserIndexToLaserAngle(i);
+	double currentYaw = Utils::convertDegreeToRadian(location->yaw);
+	Matrix<Utils::CELL_STATUS>* map = Map::getInstance()->getOriginalMap();
+
+	for (int i = 0; i <= Utils::MAX_LASER_INDEX; i += 20) {
+		double laserAngle = convertLaserIndexToLaserAngle(i);
 		double disFromObstacle = robot->getLaserScan(i);
-		double obstacleXPos = loc->x + (disFromObstacle * cos(loc->yaw + laserAngle));
-		double obstacleYPos = loc->y + (disFromObstacle * sin(loc->yaw + laserAngle));
+		double measuredDistance = Utils::convertMeterToPixel(disFromObstacle);
 
-		// Get the value in the map's cell that represents the obstacle location
-		int obstacleCurrCellValue =
-				Map::getInstance()->getBlownMap()->get(loc->y / Utils::CELL_SIZE,loc->x / Utils::CELL_SIZE);
+		bool isObstacleHit = false;
 
-		// if the distance is too large, assume that there is no obstacle in this index
-		// and if the distance is too short don't consider it as an obstacle because its the robot itself
-		if (disFromObstacle < 4.0 && disFromObstacle > 0.2)
-		{
-			switch (obstacleCurrCellValue)
-			{
-				case 0:
-					numOfWrongMapCells ++;
+		// check the distance
+		if (disFromObstacle < 4.0 && disFromObstacle > 0.2) {
+			double cosinus = cos(currentYaw + laserAngle);
+			double sinus = sin(currentYaw + laserAngle);
+
+			// check if the obstacle is in the right place
+			for (int j=0; j<measuredDistance; j++){
+
+				int xToCheck= location->x +  (j * cosinus);
+				int yToCheck = location->y - (j * sinus);
+
+				if (xToCheck > map->getRows() || yToCheck > map->getColumns()) {
+					isObstacleHit = true;
 					break;
-				case 1:
-					numOfRightMapCells ++;
+				}
+
+				if (map->get(yToCheck, xToCheck) == Utils::OCCUPIED) {
+					double realDistanceFromObstacle = sqrt(pow(yToCheck - location->y,2) + pow(xToCheck - location->x,2));
+					double disAbs = fabs(
+							realDistanceFromObstacle - measuredDistance);
+
+					if (disAbs < 1)
+					{
+						isObstacleHit = true;
+					}
 					break;
-				default:
-					break;
+				}
+			}
+
+			if (!isObstacleHit) {
+				missesCount++;
+			}
+			else {
+				hitsCount++;
 			}
 		}
 	}
-	return (numOfRightMapCells / (numOfRightMapCells + numOfWrongMapCells));
+
+	if (hitsCount + missesCount == 0){
+		return 1;
+	}
+
+	return (hitsCount / (hitsCount + missesCount));
 }
 
-double Particle::getAngleByIndex(int index)
+double Particle::convertLaserIndexToLaserAngle(int index)
 {
-
-		return ((double)index * Utils::ANGULAR_RESULUTION - 30);
-
+	return ((index * Utils::ANGULAR_RESULUTION - 120.0) / 180.0) * M_PI;
 }
-
-double Particle::getRadianByIndex(int index)
-{
-
-		return (getAngleByIndex(index) * M_PI / 180);
-}
-
-double Particle::laserIndexToLaserAngle(int index)
-{
-	return ((index * 0.36 - 120.0) / 180.0) * M_PI;
-}
-

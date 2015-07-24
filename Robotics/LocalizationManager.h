@@ -15,17 +15,14 @@
 #include "ConfigurationManager.h"
 
 class LocalizationManager {
-private:
-	ConfigurationManager* _configM;
 public:
 	LocalizationManager();
 	virtual ~LocalizationManager();
 
-	std::vector<Particle*> particleVec;
-	int particlesCount;
-
-	void UpdateParticles(Robot* robot, double deltaX, double deltaY, double deltaYaw);
-	Particle* GetBestParticle();
+	std::vector<Particle*> particles;
+	void updateParticles(Robot* robot, double deltaX, double deltaY, double deltaYaw);
+	Particle* getBestParticle();
+	void createParticles();
 };
 
 #endif /* LOCALIZATIONMANAGER_H_ */

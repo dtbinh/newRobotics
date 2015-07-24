@@ -39,7 +39,7 @@ public:
 			return _matrix[row][col];
 		}
 
-        throw std::invalid_argument( "received negative value" );
+        throw std::invalid_argument( "matrix received exceeded value" );
 
 	};
 

@@ -68,7 +68,6 @@ void LocalizationManager::updateParticles(Robot* robot, double deltaX, double de
 		}
 	}
 
-	cout << "before: " << this->particles.size()  << "  after: " << newParticles.size() << endl;
 	particles = newParticles;
 }
 

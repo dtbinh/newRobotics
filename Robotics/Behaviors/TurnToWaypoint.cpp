@@ -12,10 +12,8 @@ bool TurnToWaypoint::startCond()
 	// Turn to waypoint if we have eye contact to it
 	Position* currWayPoint = _waypointMgr->getCurrWayPoint();
 
-	// Check if it's the last waypoint or we cant reach it
-	if (currWayPoint == NULL ||
-			!_waypointMgr->isClearPath(_robot->getXPos(), _robot->getYPos(),
-									  currWayPoint->getX(), currWayPoint->getY())){
+	// Check if it's the last waypoint
+	if (currWayPoint == NULL){
 		return false;
 	}
 
@@ -35,7 +33,7 @@ bool TurnToWaypoint::startCond()
 
 void TurnToWaypoint::action()
 {
-	_robot->setSpeed(0.0,_isLeftTurn * 0.3);
+	_robot->setSpeed(0.0,_isLeftTurn * 0.2);
 }
 
 double TurnToWaypoint::getPriority()

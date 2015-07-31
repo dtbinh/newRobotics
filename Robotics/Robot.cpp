@@ -5,10 +5,15 @@ using namespace std;
 
 Robot::Robot(char* host, int port):_pc(host,port), _pp(&_pc),_lp(&_pc)
 {
-	float yaw = Utils::convertDegreeToRadian(Utils::configurationManager->yawStartLocation);
+	_startYaw = Utils::convertDegreeToRadian(Utils::configurationManager->yawStartLocation);
 
 	_pp.SetMotorEnable(true);
-	_pp.SetOdometry(0,0,yaw); // do this to intialize the yaw in the robot's odometry
+	_pp.SetOdometry(0,0,_startYaw); // do this to intialize the yaw in the robot's odometry
+}
+
+void Robot::setOdometry()
+{
+	_pp.SetOdometry(0,0,_startYaw);
 }
 
 double Robot::getLaserScan(int index)

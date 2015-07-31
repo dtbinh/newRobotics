@@ -28,6 +28,8 @@ bool GoForward::stopCond()
 	if (!startCond()){
 		return false;
 	}
+	_robot->Read();
+	_robot->Read();
 	return (_waypointMgr->isInWayPoint(_robot->getXPos(), _robot->getYPos()));
 }
 

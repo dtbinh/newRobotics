@@ -14,7 +14,7 @@ using namespace std;
 
 int main(){
 
-	Robot robot("localhost", 6665);
+	Robot robot("10.10.245.65", 6665);
 	PathPlanner* pathPlanner = new PathPlanner();
 	AvoidObstaclesPlan* avoidObstaclesPlan = new AvoidObstaclesPlan(&robot, pathPlanner->getWaypointsMgr());
 	vector<Position*> points = pathPlanner->getWaypointsMgr()->getWayPoints();

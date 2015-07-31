@@ -5,7 +5,7 @@
 #define CENTER_LASER_INDEX 333
 #define MIN_FRONT_DISTANCE 0.6
 #define MIN_SIDE_DISTANCE 0.2
-#define FORWARD_SPEED 0.4
+#define FORWARD_SPEED 0.15
 #define ROTATION_SPEED 0.3
 
 #include "../Robot.h"

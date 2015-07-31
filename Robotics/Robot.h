@@ -10,6 +10,7 @@ using namespace PlayerCc;
 
 class Robot {
 private:
+	double _startYaw;
 	PlayerClient _pc;
 	Position2dProxy _pp;
 	LaserProxy _lp;
@@ -22,6 +23,7 @@ public:
 	double getXPos();
 	double getYPos();
 	double getYaw();
+	void setOdometry();
 };
 
 #endif /* ROBOT_H_ */

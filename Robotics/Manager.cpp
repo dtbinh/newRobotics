@@ -17,6 +17,7 @@ Manager::Manager(Robot* robot, PathPlanner* pathPlanner,
 
 void Manager::run() {
 	for (int i = 0; i < 15; i++) {
+		_robot->setOdometry();
 		_robot->Read();
 	}
 
@@ -33,6 +34,7 @@ void Manager::run() {
 	while (_curr != NULL) {
 		while (!_curr->stopCond()) {
 			_curr->action();
+			_robot->Read();
 			_robot->Read();
 
 			// Get the robot's new location
@@ -51,12 +53,11 @@ void Manager::run() {
 			Particle* best = _localizationManager.getBestParticle();
 			_localizationManager.createParticles();
 
-			cout << "Robot's position: " << newX << ", " << newY << ", "
-					<< newYaw << endl;
+			prevX = best->location->x;
+			prevX = best->location->y;
+			prevX = best->location->yaw;
 
-
-			cout << "Robot's position by particles: " << best->location->x << ", "
-					<< best->location->y << ", " << best->location->yaw << ", " << best->belief << endl;
+			cout << "Robot's position: " << newX << ", " << newY << endl;
 
 			prevX = newX;
 			prevY = newY;
